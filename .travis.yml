@@ -2,5 +2,11 @@ language: java
 jdk:
   - openjdk11
 
+addons:
+  sonarcloud:
+    organization: "hrytsenko"
+    token:
+      secure: "D1RBvhbeIPU645PP+mTDHEGQgWSlyFkhD/TyoCcBIuc2jjXccp687bChTtvp48+fu3tpqYSY9Y4QaZdahtpGV/k48MILZv383Ds89RbdZpIoDjxYK+ExOME8bUM0ihk07Lz5IIZm4+e3gPEmvfgPC18oYScdZNYTL9FXlWxtKIEWL9DLH10pEISbiYEADnhKx8fSDjCFeIK5KLpJtcrG+AVWVpdzCvLuyM5pPzEjSkCXJqsY5QfY9U+Tk2cTPPT2ME3wFXaOWf2Nz1RC9ZllPQ/Krl6A7SiwB09ubPFchxPCGk55Qt/q+BVviqJeANceqYpHrRrg+pN+y8WOOaT+rLxJkCyHtkRMpmv/V12swgVSQm0oA9goX74ZfsqJdYm9gSSezrh+F0JydwsFpe/K9m+M49hn6vpjccDnC8fK5x0uoaBRZtQwXPGijhImE8hwq3ugjUoDX5BjSm6R9Ihsfwb9lTqEAJLcgvqEY2A447Ers766oI1lx0nuxNev0ew/S2DjkoJXijKkazoAcHSwFERK/eRq1BWh1DqIgAizNwM2s8C8/s7TFw4g/ghvGgFPSBKQ/AxYrKpPbspwNt7PETvk/FA7zuMGI68OhsGptRayuUsa44jz3qXbENIbTADP0MvQqys9oq8hvwHlgMkVfOHOVx2QY0QejXL+oqj1iKY="
+
 script:
-  - mvn clean verify -Pcoverage
+  - mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -Dsonar.projectKey=hrytsenko_json-data -Pcoverage
