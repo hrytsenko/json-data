@@ -25,9 +25,6 @@ public final class JsonBean extends JsonEntity<JsonBean> {
         return new JsonBean();
     }
 
-    public JsonBean() {
-    }
-
     @Override
     public boolean contains(String path) {
         return super.contains(path);
