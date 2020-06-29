@@ -42,6 +42,7 @@
         <json-jolt.version>0.1.1</json-jolt.version>
         <json-justify.version>2.1.0</json-justify.version>
         <json-jakarta.version>1.1.6</json-jakarta.version>
+        <commons-io.version>2.7</commons-io.version>
 
         <lombock.version>1.18.12</lombock.version>
         <junit.version>5.6.2</junit.version>
@@ -74,6 +75,12 @@
                 <artifactId>jakarta.json</artifactId>
                 <classifier>module</classifier>
                 <version>${json-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
 
             <dependency>
@@ -118,6 +125,11 @@
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.json</artifactId>
             <classifier>module</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
 
         <dependency>
