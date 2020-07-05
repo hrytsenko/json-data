@@ -35,15 +35,24 @@ public class JsonValidator {
     Provider provider;
 
     public static JsonValidator create(String schema) {
-        return new JsonValidator(JustifyProvider.create(schema));
+        return JsonExceptions.wrap(
+                () -> new JsonValidator(JustifyProvider.create(schema)),
+                exception -> new JsonValidatorException("Configuration failed", exception)
+        );
     }
 
     public void validate(JsonEntity<?> entity) {
-        provider.validate(JsonParser.entityToMap(entity));
+        JsonExceptions.wrap(
+                () -> provider.validate(JsonParser.entityToMap(entity)),
+                exception -> new JsonValidatorException("Validation failed", exception)
+        );
     }
 
     public void validate(List<? extends JsonEntity<?>> entities) {
-        provider.validate(JsonParser.entitiesToList(entities));
+        JsonExceptions.wrap(
+                () -> provider.validate(JsonParser.entitiesToList(entities)),
+                exception -> new JsonValidatorException("Validation failed", exception)
+        );
     }
 
     interface Provider {

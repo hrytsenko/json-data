@@ -33,15 +33,24 @@ public class JsonMapper<R extends JsonEntity<R>> {
     Supplier<R> supplier;
 
     public static <R extends JsonEntity<R>> JsonMapper<R> create(String schema, Supplier<R> supplier) {
-        return new JsonMapper<>(JoltProvider.create(schema), supplier);
+        return JsonExceptions.wrap(
+                () -> new JsonMapper<>(JoltProvider.create(schema), supplier),
+                exception -> new JsonMapperException("Configuration failed", exception)
+        );
     }
 
     public R map(JsonEntity<?> entity) {
-        return JsonParser.mapToEntity(provider.map(JsonParser.entityToMap(entity)), supplier);
+        return JsonExceptions.wrap(
+                () -> JsonParser.mapToEntity(provider.map(JsonParser.entityToMap(entity)), supplier),
+                exception -> new JsonMapperException("Transformation failed", exception)
+        );
     }
 
     public R map(List<? extends JsonEntity<?>> entities) {
-        return JsonParser.mapToEntity(provider.map(JsonParser.entitiesToList(entities)), supplier);
+        return JsonExceptions.wrap(
+                () -> JsonParser.mapToEntity(provider.map(JsonParser.entitiesToList(entities)), supplier),
+                exception -> new JsonMapperException("Transformation failed", exception)
+        );
     }
 
     interface Provider {

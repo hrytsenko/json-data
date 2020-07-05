@@ -17,11 +17,18 @@ package com.github.hrytsenko.jsondata;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.leadpony.justify.api.JsonValidatingException;
 
 import java.util.List;
 
 class JsonValidatorTest {
+
+    @Test
+    void create_invalidSchema() {
+        String sourceSchema = "";
+
+        Assertions.assertThrows(JsonValidatorException.class,
+                () -> JsonValidator.create(sourceSchema));
+    }
 
     @Test
     void validateEntity() {
@@ -36,16 +43,25 @@ class JsonValidatorTest {
         String sourceSchema = "{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}";
         JsonBean sourceEntity = JsonParser.stringToEntity("{'foo':'BAR'}", JsonBean::create);
 
-        Assertions.assertThrows(JsonValidatingException.class,
+        Assertions.assertThrows(JsonValidatorException.class,
                 () -> JsonValidator.create(sourceSchema).validate(sourceEntity));
     }
 
     @Test
     void validateEntities() {
         String sourceSchema = "{\"type\":\"array\",\"items\":{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}}";
-        List<JsonBean> sourceEntity = JsonParser.stringToEntities("[{'foo':'FOO'}]", JsonBean::create);
+        List<JsonBean> sourceEntities = JsonParser.stringToEntities("[{'foo':'FOO'}]", JsonBean::create);
 
-        JsonValidator.create(sourceSchema).validate(sourceEntity);
+        JsonValidator.create(sourceSchema).validate(sourceEntities);
+    }
+
+    @Test
+    void validateEntities_failure() {
+        String sourceSchema = "{\"type\":\"array\",\"items\":{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}}";
+        List<JsonBean> sourceEntities = JsonParser.stringToEntities("[{'foo':'BAR'}]", JsonBean::create);
+
+        Assertions.assertThrows(JsonValidatorException.class,
+                () -> JsonValidator.create(sourceSchema).validate(sourceEntities));
     }
 
 }

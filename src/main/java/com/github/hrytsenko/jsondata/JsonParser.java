@@ -40,11 +40,17 @@ public class JsonParser {
     private static final Provider provider = JacksonProvider.create();
 
     public static Map<String, ?> stringToMap(String json) {
-        return provider.stringToMap(json);
+        return JsonExceptions.wrap(
+                () -> provider.stringToMap(json),
+                exception -> new JsonParserException("Serialization failed", exception)
+        );
     }
 
     public static List<Map<String, ?>> stringToList(String json) {
-        return provider.stringToList(json);
+        return JsonExceptions.wrap(
+                () -> provider.stringToList(json),
+                exception -> new JsonParserException("Serialization failed", exception)
+        );
     }
 
     public static <R extends JsonEntity<R>> R stringToEntity(String json, Supplier<R> supplier) {
@@ -76,11 +82,17 @@ public class JsonParser {
     }
 
     public static String mapToString(Map<String, ?> json) {
-        return provider.mapToString(json);
+        return JsonExceptions.wrap(
+                () -> provider.mapToString(json),
+                exception -> new JsonParserException("Serialization failed", exception)
+        );
     }
 
     public static String listToString(List<Map<String, ?>> json) {
-        return provider.listToString(json);
+        return JsonExceptions.wrap(
+                () -> provider.listToString(json),
+                exception -> new JsonParserException("Serialization failed", exception)
+        );
     }
 
     public static String entityToString(JsonEntity<?> entity) {
@@ -137,7 +149,7 @@ public class JsonParser {
 
         @SneakyThrows
         private <R> R readObject(String json) {
-            return objectMapper.readValue(json, new TypeReference<R>() {
+            return objectMapper.readValue(json, new TypeReference<>() {
             });
         }
 
