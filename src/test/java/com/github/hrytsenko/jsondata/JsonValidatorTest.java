@@ -35,7 +35,9 @@ class JsonValidatorTest {
         String sourceSchema = "{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}";
         JsonBean sourceEntity = JsonParser.stringToEntity("{'foo':'FOO'}", JsonBean::create);
 
-        JsonValidator.create(sourceSchema).validate(sourceEntity);
+        JsonValidator validator = JsonValidator.create(sourceSchema);
+
+        validator.validate(sourceEntity);
     }
 
     @Test
@@ -43,8 +45,10 @@ class JsonValidatorTest {
         String sourceSchema = "{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}";
         JsonBean sourceEntity = JsonParser.stringToEntity("{'foo':'BAR'}", JsonBean::create);
 
+        JsonValidator validator = JsonValidator.create(sourceSchema);
+
         Assertions.assertThrows(JsonValidatorException.class,
-                () -> JsonValidator.create(sourceSchema).validate(sourceEntity));
+                () -> validator.validate(sourceEntity));
     }
 
     @Test
@@ -52,7 +56,9 @@ class JsonValidatorTest {
         String sourceSchema = "{\"type\":\"array\",\"items\":{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}}";
         List<JsonBean> sourceEntities = JsonParser.stringToEntities("[{'foo':'FOO'}]", JsonBean::create);
 
-        JsonValidator.create(sourceSchema).validate(sourceEntities);
+        JsonValidator validator = JsonValidator.create(sourceSchema);
+
+        validator.validate(sourceEntities);
     }
 
     @Test
@@ -60,8 +66,10 @@ class JsonValidatorTest {
         String sourceSchema = "{\"type\":\"array\",\"items\":{\"properties\":{\"foo\":{\"enum\":[\"FOO\"]}},\"required\":[\"foo\"]}}";
         List<JsonBean> sourceEntities = JsonParser.stringToEntities("[{'foo':'BAR'}]", JsonBean::create);
 
+        JsonValidator validator = JsonValidator.create(sourceSchema);
+
         Assertions.assertThrows(JsonValidatorException.class,
-                () -> JsonValidator.create(sourceSchema).validate(sourceEntities));
+                () -> validator.validate(sourceEntities));
     }
 
 }

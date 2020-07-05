@@ -37,10 +37,10 @@ class JsonMapperTest {
     @ParameterizedTest
     @MethodSource("mapEntity_data")
     void mapEntity(String sourceSchema, String sourceJson, String expectedJson) {
-        JsonMapper<JsonBean> sourceMapper = JsonMapper.create(sourceSchema, JsonBean::create);
         JsonBean sourceEntity = JsonParser.stringToEntity(sourceJson, JsonBean::create);
 
-        JsonBean actualEntity = sourceMapper.map(sourceEntity);
+        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+        JsonBean actualEntity = mapper.map(sourceEntity);
 
         JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
         Assertions.assertEquals(expectedEntity, actualEntity);
@@ -64,10 +64,10 @@ class JsonMapperTest {
     @ParameterizedTest
     @MethodSource("mapEntities_data")
     void mapEntities(String sourceSchema, String sourceJson, String expectedJson) {
-        JsonMapper<JsonBean> sourceMapper = JsonMapper.create(sourceSchema, JsonBean::create);
         List<JsonBean> sourceEntity = JsonParser.stringToEntities(sourceJson, JsonBean::create);
 
-        JsonBean actualEntity = sourceMapper.map(sourceEntity);
+        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+        JsonBean actualEntity = mapper.map(sourceEntity);
 
         JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
         Assertions.assertEquals(expectedEntity, actualEntity);
