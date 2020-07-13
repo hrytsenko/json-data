@@ -74,12 +74,22 @@ class JsonEntityTest {
     }
 
     @Test
-    void factory() {
+    void factory_create() {
         JsonEntity.Factory sourceFactory = new JsonEntity.Factory(TestEntity.class);
 
         TestEntity actualEntity = (TestEntity) sourceFactory.create();
 
         TestEntity expectedEntity = JsonParser.stringToEntity("{}", TestEntity::new);
+        Assertions.assertEquals(expectedEntity, actualEntity);
+    }
+
+    @Test
+    void factory_createFromMap() {
+        JsonEntity.Factory sourceFactory = new JsonEntity.Factory(TestEntity.class);
+
+        TestEntity actualEntity = (TestEntity) sourceFactory.createFromMap(Map.of("foo", "FOO"));
+
+        TestEntity expectedEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 

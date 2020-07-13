@@ -205,8 +205,12 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
         }
 
         @SneakyThrows
-        public JsonEntity create() {
-            return (JsonEntity) constructor.newInstance();
+        public JsonEntity<?> create() {
+            return (JsonEntity<?>) constructor.newInstance();
+        }
+
+        public JsonEntity<?> createFromMap(Map<String, ?> json) {
+            return create().fromMap(json);
         }
 
     }
