@@ -5,7 +5,7 @@
 
     <groupId>com.github.hrytsenko</groupId>
     <artifactId>json-data</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0-beta</version>
 
     <url>https://github.com/hrytsenko/json-data</url>
     <inceptionYear>2020</inceptionYear>
