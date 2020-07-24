@@ -15,11 +15,13 @@
  */
 package com.github.hrytsenko.jsondata;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
@@ -32,10 +34,20 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
+
 public abstract class JsonEntity<T extends JsonEntity<T>> {
 
+    public static final JacksonJsonProvider PROVIDER =
+            new JacksonJsonProvider(
+                    new ObjectMapper()
+                            .configure(USE_LONG_FOR_INTS, true)
+            );
+
     private static final Configuration CONFIGURATION =
-            Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
+            Configuration.defaultConfiguration()
+                    .jsonProvider(PROVIDER)
+                    .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
 
     private DocumentContext context;
 
