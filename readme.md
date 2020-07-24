@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/hrytsenko/json-data.svg?branch=master)](https://travis-ci.org/hrytsenko/json-data)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hrytsenko_json-data&metric=alert_status)](https://sonarcloud.io/dashboard?id=hrytsenko_json-data)
+[![](https://jitpack.io/v/hrytsenko/json-data.svg)](https://jitpack.io/#hrytsenko/json-data)
 
 # Summary
 
