@@ -16,13 +16,15 @@
 package com.github.hrytsenko.jsondata;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class JsonResourcesTest {
 
-    @Test
-    void readResource() {
-        String actualJson = JsonResources.readResource("empty.json");
+    @ParameterizedTest
+    @ValueSource(strings = {"empty.json", "/empty.json"})
+    void readResource(String sourcePath) {
+        String actualJson = JsonResources.readResource(sourcePath);
 
         String expectedJson = "{}";
         Assertions.assertEquals(expectedJson, actualJson);

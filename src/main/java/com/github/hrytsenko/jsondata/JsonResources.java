@@ -29,9 +29,16 @@ public class JsonResources {
 
     @SneakyThrows
     public static String readResource(String name) {
-        try (InputStream stream = getLoader().getResourceAsStream(Objects.requireNonNull(name))) {
+        try (InputStream stream = getLoader().getResourceAsStream(resolveName(name))) {
             return IOUtils.toString(Objects.requireNonNull(stream), StandardCharsets.UTF_8);
         }
+    }
+
+    private static String resolveName(String name) {
+        if (name.startsWith("/")) {
+            return name.substring(1);
+        }
+        return name;
     }
 
     private static ClassLoader getLoader() {
