@@ -199,6 +199,15 @@ class JsonBeanTest {
     }
 
     @Test
+    void handleEntity_absent() {
+        JsonBean sourceBean = JsonBean.create();
+
+        JsonBean actualValue = sourceBean.getEntity("foo", JsonBean::create);
+
+        Assertions.assertNull(actualValue);
+    }
+
+    @Test
     void handleEntities() {
         List<JsonBean> sourceValue = JsonParser.stringToEntities("[{'bar':'BAR'}]", JsonBean::create);
 
@@ -206,6 +215,15 @@ class JsonBeanTest {
         List<JsonBean> actualValue = actualBean.getEntities("foo", JsonBean::create);
 
         Assertions.assertEquals(sourceValue, actualValue);
+    }
+
+    @Test
+    void handleEntities_absent() {
+        JsonBean sourceBean = JsonBean.create();
+
+        List<JsonBean> actualValue = sourceBean.getEntities("foo", JsonBean::create);
+
+        Assertions.assertNull(actualValue);
     }
 
     @Test

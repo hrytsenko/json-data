@@ -85,11 +85,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
 
     protected <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
         Map<String, ?> object = getMap(path);
+        if (Objects.isNull(object)) {
+            return null;
+        }
         return supplier.get().fromMap(object);
     }
 
     protected <E extends JsonEntity<E>> List<E> getEntities(String path, Supplier<E> supplier) {
         List<Map<String, ?>> objects = getList(path);
+        if (Objects.isNull(objects)) {
+            return null;
+        }
         return objects.stream()
                 .map(json -> supplier.get().fromMap(json))
                 .collect(Collectors.toList());
