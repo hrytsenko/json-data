@@ -151,6 +151,46 @@ class JsonParserTest {
     }
 
     @Test
+    void mapToString() {
+        Map<String, ?> sourceMap = Map.of("foo", "FOO");
+
+        String actualJson = JsonParser.mapToString(sourceMap);
+
+        String expectedJson = "{\"foo\":\"FOO\"}";
+        Assertions.assertEquals(expectedJson, actualJson);
+    }
+
+    @Test
+    void mapToString_serializationFailed() {
+        Map<String, ?> sourceMap = Map.of("foo", new Object());
+
+        Assertions.assertThrows(
+                JsonParserException.class,
+                () -> JsonParser.mapToString(sourceMap)
+        );
+    }
+
+    @Test
+    void listToString() {
+        List<Map<String, ?>> sourceList = List.of(Map.of("foo", "FOO"));
+
+        String actualJson = JsonParser.listToString(sourceList);
+
+        String expectedJson = "[{\"foo\":\"FOO\"}]";
+        Assertions.assertEquals(expectedJson, actualJson);
+    }
+
+    @Test
+    void listToString_serializationFailed() {
+        List<Map<String, ?>> sourceList = List.of(Map.of("foo", new Object()));
+
+        Assertions.assertThrows(
+                JsonParserException.class,
+                () -> JsonParser.listToString(sourceList)
+        );
+    }
+
+    @Test
     void entityToString() {
         JsonBean sourceEntity = JsonParser.stringToEntity("{'foo':'FOO'}", JsonBean::create);
 
