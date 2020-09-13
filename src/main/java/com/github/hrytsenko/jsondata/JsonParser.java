@@ -40,14 +40,14 @@ public class JsonParser {
 
     public static Map<String, ?> stringToMap(String json) {
         return JsonExceptions.wrap(
-                () -> provider.stringToMap(json),
+                () -> provider.readObject(json),
                 exception -> new JsonParserException("Deserialization failed", exception)
         );
     }
 
     public static List<Map<String, ?>> stringToList(String json) {
         return JsonExceptions.wrap(
-                () -> provider.stringToList(json),
+                () -> provider.readObjects(json),
                 exception -> new JsonParserException("Deserialization failed", exception)
         );
     }
@@ -82,14 +82,14 @@ public class JsonParser {
 
     public static String mapToString(Map<String, ?> json) {
         return JsonExceptions.wrap(
-                () -> provider.mapToString(json),
+                () -> provider.writeObject(json),
                 exception -> new JsonParserException("Serialization failed", exception)
         );
     }
 
     public static String listToString(List<Map<String, ?>> json) {
         return JsonExceptions.wrap(
-                () -> provider.listToString(json),
+                () -> provider.writeObjects(json),
                 exception -> new JsonParserException("Serialization failed", exception)
         );
     }
@@ -112,13 +112,13 @@ public class JsonParser {
 
     interface Provider {
 
-        Map<String, ?> stringToMap(String json);
+        Map<String, ?> readObject(String json);
 
-        List<Map<String, ?>> stringToList(String json);
+        List<Map<String, ?>> readObjects(String json);
 
-        String mapToString(Map<String, ?> json);
+        String writeObject(Map<String, ?> json);
 
-        String listToString(List<Map<String, ?>> json);
+        String writeObjects(List<Map<String, ?>> json);
 
     }
 
@@ -137,33 +137,33 @@ public class JsonParser {
         ObjectMapper objectMapper;
 
         @Override
-        public Map<String, ?> stringToMap(String json) {
-            return readObject(json);
+        public Map<String, ?> readObject(String json) {
+            return read(json);
         }
 
         @Override
-        public List<Map<String, ?>> stringToList(String json) {
-            return readObject(json);
+        public List<Map<String, ?>> readObjects(String json) {
+            return read(json);
         }
 
         @SneakyThrows
-        private <R> R readObject(String json) {
+        private <R> R read(String json) {
             return objectMapper.readValue(json, new TypeReference<>() {
             });
         }
 
         @Override
-        public String mapToString(Map<String, ?> json) {
-            return writeObject(json);
+        public String writeObject(Map<String, ?> json) {
+            return write(json);
         }
 
         @Override
-        public String listToString(List<Map<String, ?>> json) {
-            return writeObject(json);
+        public String writeObjects(List<Map<String, ?>> json) {
+            return write(json);
         }
 
         @SneakyThrows
-        private String writeObject(Object object) {
+        private String write(Object object) {
             return objectMapper.writeValueAsString(object);
         }
 

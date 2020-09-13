@@ -41,23 +41,23 @@ public class JsonMapper<R extends JsonEntity<R>> {
 
     public R map(JsonEntity<?> entity) {
         return JsonExceptions.wrap(
-                () -> JsonParser.mapToEntity(provider.map(JsonParser.entityToMap(entity)), supplier),
+                () -> JsonParser.mapToEntity(provider.mapObject(JsonParser.entityToMap(entity)), supplier),
                 exception -> new JsonMapperException("Transformation failed", exception)
         );
     }
 
     public R map(List<? extends JsonEntity<?>> entities) {
         return JsonExceptions.wrap(
-                () -> JsonParser.mapToEntity(provider.map(JsonParser.entitiesToList(entities)), supplier),
+                () -> JsonParser.mapToEntity(provider.mapObjects(JsonParser.entitiesToList(entities)), supplier),
                 exception -> new JsonMapperException("Transformation failed", exception)
         );
     }
 
     interface Provider {
 
-        Map<String, ?> map(Map<String, ?> json);
+        Map<String, ?> mapObject(Map<String, ?> json);
 
-        Map<String, ?> map(List<Map<String, ?>> json);
+        Map<String, ?> mapObjects(List<Map<String, ?>> json);
 
     }
 
@@ -72,16 +72,16 @@ public class JsonMapper<R extends JsonEntity<R>> {
         }
 
         @Override
-        public Map<String, ?> map(Map<String, ?> json) {
-            return map(schema, json);
+        public Map<String, ?> mapObject(Map<String, ?> json) {
+            return transform(json);
         }
 
         @Override
-        public Map<String, ?> map(List<Map<String, ?>> json) {
-            return map(schema, json);
+        public Map<String, ?> mapObjects(List<Map<String, ?>> json) {
+            return transform(json);
         }
 
-        private Map<String, ?> map(Chainr schema, Object json) {
+        private Map<String, ?> transform(Object json) {
             Objects.requireNonNull(json, "Input is undefined");
             @SuppressWarnings("unchecked")
             Map<String, ?> output = (Map<String, ?>) schema.transform(json);

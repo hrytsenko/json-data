@@ -43,23 +43,23 @@ public class JsonValidator {
 
     public void validate(JsonEntity<?> entity) {
         JsonExceptions.wrap(
-                () -> provider.validate(JsonParser.entityToMap(entity)),
+                () -> provider.validateObject(JsonParser.entityToMap(entity)),
                 exception -> new JsonValidatorException("Validation failed", exception)
         );
     }
 
     public void validate(List<? extends JsonEntity<?>> entities) {
         JsonExceptions.wrap(
-                () -> provider.validate(JsonParser.entitiesToList(entities)),
+                () -> provider.validateObjects(JsonParser.entitiesToList(entities)),
                 exception -> new JsonValidatorException("Validation failed", exception)
         );
     }
 
     interface Provider {
 
-        void validate(Map<String, ?> json);
+        void validateObject(Map<String, ?> json);
 
-        void validate(List<Map<String, ?>> json);
+        void validateObjects(List<Map<String, ?>> json);
 
     }
 
@@ -76,12 +76,12 @@ public class JsonValidator {
         }
 
         @Override
-        public void validate(Map<String, ?> json) {
+        public void validateObject(Map<String, ?> json) {
             validate(JsonParser.mapToString(json));
         }
 
         @Override
-        public void validate(List<Map<String, ?>> json) {
+        public void validateObjects(List<Map<String, ?>> json) {
             validate(JsonParser.listToString(json));
         }
 
