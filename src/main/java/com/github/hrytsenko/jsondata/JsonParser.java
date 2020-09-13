@@ -42,14 +42,14 @@ public class JsonParser {
     public static Map<String, ?> stringToMap(String json) {
         return JsonExceptions.wrap(
                 () -> provider.stringToMap(json),
-                exception -> new JsonParserException("Serialization failed", exception)
+                exception -> new JsonParserException("Deserialization failed", exception)
         );
     }
 
     public static List<Map<String, ?>> stringToList(String json) {
         return JsonExceptions.wrap(
                 () -> provider.stringToList(json),
-                exception -> new JsonParserException("Serialization failed", exception)
+                exception -> new JsonParserException("Deserialization failed", exception)
         );
     }
 
