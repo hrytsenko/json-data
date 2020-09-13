@@ -32,8 +32,7 @@ class JsonMapperTest {
 
         Assertions.assertThrows(
                 JsonMapperException.class,
-                () -> JsonMapper.create(sourceSchema, JsonBean::create)
-        );
+                () -> JsonMapper.create(sourceSchema, JsonBean::create));
     }
 
     @ParameterizedTest
@@ -71,8 +70,7 @@ class JsonMapperTest {
         JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
         Assertions.assertThrows(
                 JsonMapperException.class,
-                () -> mapper.map(sourceEntity)
-        );
+                () -> mapper.map(sourceEntity));
     }
 
     @ParameterizedTest
@@ -110,8 +108,7 @@ class JsonMapperTest {
         JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
         Assertions.assertThrows(
                 JsonMapperException.class,
-                () -> mapper.map(List.of(sourceEntity))
-        );
+                () -> mapper.map(List.of(sourceEntity)));
     }
 
 }

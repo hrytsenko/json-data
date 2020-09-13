@@ -26,7 +26,8 @@ class JsonValidatorTest {
     void create_invalidSchema() {
         String sourceSchema = "";
 
-        Assertions.assertThrows(JsonValidatorException.class,
+        Assertions.assertThrows(
+                JsonValidatorException.class,
                 () -> JsonValidator.create(sourceSchema));
     }
 
@@ -47,7 +48,8 @@ class JsonValidatorTest {
 
         JsonValidator validator = JsonValidator.create(sourceSchema);
 
-        Assertions.assertThrows(JsonValidatorException.class,
+        Assertions.assertThrows(
+                JsonValidatorException.class,
                 () -> validator.validate(sourceEntity));
     }
 
@@ -68,7 +70,8 @@ class JsonValidatorTest {
 
         JsonValidator validator = JsonValidator.create(sourceSchema);
 
-        Assertions.assertThrows(JsonValidatorException.class,
+        Assertions.assertThrows(
+                JsonValidatorException.class,
                 () -> validator.validate(sourceEntities));
     }
 

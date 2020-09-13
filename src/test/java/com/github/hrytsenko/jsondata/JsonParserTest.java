@@ -44,8 +44,7 @@ class JsonParserTest {
 
         Assertions.assertThrows(
                 JsonParserException.class,
-                () -> JsonParser.stringToMap(sourceJson)
-        );
+                () -> JsonParser.stringToMap(sourceJson));
     }
 
     @Test
@@ -64,8 +63,7 @@ class JsonParserTest {
 
         Assertions.assertThrows(
                 JsonParserException.class,
-                () -> JsonParser.stringToList(sourceJson)
-        );
+                () -> JsonParser.stringToList(sourceJson));
     }
 
     @Test
@@ -166,8 +164,7 @@ class JsonParserTest {
 
         Assertions.assertThrows(
                 JsonParserException.class,
-                () -> JsonParser.mapToString(sourceMap)
-        );
+                () -> JsonParser.mapToString(sourceMap));
     }
 
     @Test
@@ -186,8 +183,7 @@ class JsonParserTest {
 
         Assertions.assertThrows(
                 JsonParserException.class,
-                () -> JsonParser.listToString(sourceList)
-        );
+                () -> JsonParser.listToString(sourceList));
     }
 
     @Test

@@ -41,15 +41,13 @@ public class JsonParser {
     public static Map<String, ?> stringToMap(String json) {
         return JsonExceptions.wrap(
                 () -> provider.readObject(json),
-                exception -> new JsonParserException("Deserialization failed", exception)
-        );
+                exception -> new JsonParserException("Deserialization failed", exception));
     }
 
     public static List<Map<String, ?>> stringToList(String json) {
         return JsonExceptions.wrap(
                 () -> provider.readObjects(json),
-                exception -> new JsonParserException("Deserialization failed", exception)
-        );
+                exception -> new JsonParserException("Deserialization failed", exception));
     }
 
     public static <R extends JsonEntity<R>> R stringToEntity(String json, Supplier<R> supplier) {
@@ -83,15 +81,13 @@ public class JsonParser {
     public static String mapToString(Map<String, ?> json) {
         return JsonExceptions.wrap(
                 () -> provider.writeObject(json),
-                exception -> new JsonParserException("Serialization failed", exception)
-        );
+                exception -> new JsonParserException("Serialization failed", exception));
     }
 
     public static String listToString(List<Map<String, ?>> json) {
         return JsonExceptions.wrap(
                 () -> provider.writeObjects(json),
-                exception -> new JsonParserException("Serialization failed", exception)
-        );
+                exception -> new JsonParserException("Serialization failed", exception));
     }
 
     public static String entityToString(JsonEntity<?> entity) {
