@@ -39,6 +39,16 @@ class JsonParserTest {
     }
 
     @Test
+    void stringToMap_deserializationFailed() {
+        String sourceJson = "[]";
+
+        Assertions.assertThrows(
+                JsonParserException.class,
+                () -> JsonParser.stringToMap(sourceJson)
+        );
+    }
+
+    @Test
     void stringToList() {
         String sourceJson = "[{'foo':'FOO'}]";
 
@@ -46,6 +56,16 @@ class JsonParserTest {
 
         List<Map<String, ?>> expectedList = List.of(Map.of("foo", "FOO"));
         Assertions.assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void stringToList_deserializationFailed() {
+        String sourceJson = "{}";
+
+        Assertions.assertThrows(
+                JsonParserException.class,
+                () -> JsonParser.stringToList(sourceJson)
+        );
     }
 
     @Test
