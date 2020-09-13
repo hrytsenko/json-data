@@ -26,7 +26,6 @@ import lombok.experimental.UtilityClass;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class JsonParser {
 
     public static List<Map<String, ?>> entitiesToList(List<? extends JsonEntity<?>> entities) {
         return entities.stream()
-                .map(entity -> Optional.ofNullable(entity).map(JsonEntity::asMap).orElse(null))
+                .map(entity -> Objects.nonNull(entity) ? entityToMap(entity) : null)
                 .collect(Collectors.toList());
     }
 
