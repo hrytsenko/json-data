@@ -68,7 +68,11 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     protected Long getNumber(String path) {
-        return getObject(path);
+        Number number = getObject(path);
+        if (Objects.isNull(number)) {
+            return null;
+        }
+        return number.longValue();
     }
 
     protected Boolean getBoolean(String path) {

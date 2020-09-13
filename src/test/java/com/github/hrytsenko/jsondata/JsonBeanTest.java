@@ -122,6 +122,16 @@ class JsonBeanTest {
     }
 
     @Test
+    void handleNumber_integer() {
+        JsonBean sourceBean = JsonBean.create().fromMap(Map.of("foo", 1));
+
+        Long actualValue = sourceBean.getNumber("foo");
+
+        long expectedValue = 1L;
+        Assertions.assertEquals(expectedValue, actualValue);
+    }
+
+    @Test
     void handleNumber_absent() {
         JsonBean sourceBean = JsonBean.create();
 
