@@ -25,12 +25,10 @@ import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -78,18 +76,16 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     protected <E> Map<String, E> getMap(String path) {
-        Map<String, E> object = getObject(path);
-        return Optional.ofNullable(object).map(LinkedHashMap::new).orElse(null);
+        return getObject(path);
     }
 
     protected <E> List<E> getList(String path) {
-        List<E> objects = getObject(path);
-        return Optional.ofNullable(objects).map(ArrayList::new).orElse(null);
+        return getObject(path);
     }
 
     protected <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
-        Map<String, Object> json = getMap(path);
-        return supplier.get().fromMap(json);
+        Map<String, ?> object = getMap(path);
+        return supplier.get().fromMap(object);
     }
 
     protected <E extends JsonEntity<E>> List<E> getEntities(String path, Supplier<E> supplier) {
@@ -120,23 +116,23 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     protected T putMap(String path, Map<String, ?> value) {
-        return putObject(path, new LinkedHashMap<>(value));
+        return putObject(path, value);
     }
 
     protected T putList(String path, List<?> value) {
-        return putObject(path, new ArrayList<>(value));
+        return putObject(path, value);
     }
 
     protected T putEntity(String path, JsonEntity<?> entity) {
-        return putObject(path, entity.asMap());
+        Map<String, ?> object = entity.asMap();
+        return putObject(path, object);
     }
 
     protected T putEntities(String path, List<? extends JsonEntity<?>> entities) {
         List<Map<String, ?>> objects = entities.stream()
                 .map(JsonEntity::asMap)
                 .collect(Collectors.toList());
-        putList(path, objects);
-        return self();
+        return putObject(path, objects);
     }
 
     protected T putObject(String path, Object value) {
@@ -169,7 +165,7 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     public <E> Map<String, E> asMap() {
-        return new LinkedHashMap<>(context.json());
+        return context.json();
     }
 
     public <R extends JsonEntity<R>> R as(Supplier<R> supplier) {
