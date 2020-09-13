@@ -30,8 +30,10 @@ class JsonMapperTest {
     void create_invalidSchema() {
         String sourceSchema = "";
 
-        Assertions.assertThrows(JsonMapperException.class,
-                () -> JsonMapper.create(sourceSchema, JsonBean::create));
+        Assertions.assertThrows(
+                JsonMapperException.class,
+                () -> JsonMapper.create(sourceSchema, JsonBean::create)
+        );
     }
 
     @ParameterizedTest
@@ -61,6 +63,18 @@ class JsonMapperTest {
         );
     }
 
+    @Test
+    void mapEntity_undefinedOutput() {
+        JsonBean sourceEntity = JsonBean.create();
+        String sourceSchema = "[{'operation':'shift','spec':{'foo':'bar'}}]";
+
+        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+        Assertions.assertThrows(
+                JsonMapperException.class,
+                () -> mapper.map(sourceEntity)
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("mapEntities_data")
     void mapEntities(String sourceSchema, String sourceJson, String expectedJson) {
@@ -85,6 +99,18 @@ class JsonMapperTest {
                         "[{'foo':'FOO'}]",
                         "{'bar':['FOO']}"
                 )
+        );
+    }
+
+    @Test
+    void mapEntities_undefinedOutput() {
+        JsonBean sourceEntity = JsonBean.create();
+        String sourceSchema = "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]";
+
+        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+        Assertions.assertThrows(
+                JsonMapperException.class,
+                () -> mapper.map(List.of(sourceEntity))
         );
     }
 
