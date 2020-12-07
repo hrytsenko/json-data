@@ -67,6 +67,10 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
         return getObject(path);
     }
 
+    protected T putString(String path, String value) {
+        return putObject(path, value);
+    }
+
     protected Long getNumber(String path) {
         Number number = getObject(path);
         if (Objects.isNull(number)) {
@@ -75,16 +79,38 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
         return number.longValue();
     }
 
+    protected T putNumber(String path, Long value) {
+        return putObject(path, value);
+    }
+
     protected Boolean getBoolean(String path) {
         return getObject(path);
+    }
+
+    protected T putBoolean(String path, Boolean value) {
+        return putObject(path, value);
     }
 
     protected <E> Map<String, E> getMap(String path) {
         return getObject(path);
     }
 
+    protected T putMap(String path, Map<String, ?> value) {
+        return putObject(path, value);
+    }
+
+    protected T mergeMap(Map<String, ?> value) {
+        Map<String, Object> json = asMap();
+        json.putAll(value);
+        return fromMap(json);
+    }
+
     protected <E> List<E> getList(String path) {
         return getObject(path);
+    }
+
+    protected T putList(String path, List<?> value) {
+        return putObject(path, value);
     }
 
     protected <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
@@ -93,6 +119,15 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
             return null;
         }
         return supplier.get().fromMap(object);
+    }
+
+    protected T putEntity(String path, JsonEntity<?> entity) {
+        Map<String, ?> object = entity.asMap();
+        return putObject(path, object);
+    }
+
+    protected T mergeEntity(JsonEntity<?> entity) {
+        return mergeMap(entity.asMap());
     }
 
     protected <E extends JsonEntity<E>> List<E> getEntities(String path, Supplier<E> supplier) {
@@ -105,44 +140,19 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
                 .collect(Collectors.toList());
     }
 
+    protected T putEntities(String path, List<? extends JsonEntity<?>> entities) {
+        List<Map<String, ?>> objects = entities.stream()
+                .map(JsonEntity::asMap)
+                .collect(Collectors.toList());
+        return putObject(path, objects);
+    }
+
     protected <R> R getObject(String path) {
         try {
             return context.read(path);
         } catch (PathNotFoundException exception) {
             return null;
         }
-    }
-
-    protected T putString(String path, String value) {
-        return putObject(path, value);
-    }
-
-    protected T putNumber(String path, Long value) {
-        return putObject(path, value);
-    }
-
-    protected T putBoolean(String path, Boolean value) {
-        return putObject(path, value);
-    }
-
-    protected T putMap(String path, Map<String, ?> value) {
-        return putObject(path, value);
-    }
-
-    protected T putList(String path, List<?> value) {
-        return putObject(path, value);
-    }
-
-    protected T putEntity(String path, JsonEntity<?> entity) {
-        Map<String, ?> object = entity.asMap();
-        return putObject(path, object);
-    }
-
-    protected T putEntities(String path, List<? extends JsonEntity<?>> entities) {
-        List<Map<String, ?>> objects = entities.stream()
-                .map(JsonEntity::asMap)
-                .collect(Collectors.toList());
-        return putObject(path, objects);
     }
 
     protected T putObject(String path, Object value) {
@@ -158,16 +168,6 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     protected T remove(String path) {
         context.delete(path);
         return self();
-    }
-
-    protected T mergeMap(Map<String, ?> value) {
-        Map<String, Object> json = asMap();
-        json.putAll(value);
-        return fromMap(json);
-    }
-
-    protected T mergeEntity(JsonEntity<?> entity) {
-        return mergeMap(entity.asMap());
     }
 
     public String asString() {

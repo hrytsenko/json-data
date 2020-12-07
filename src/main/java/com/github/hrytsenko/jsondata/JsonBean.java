@@ -36,43 +36,13 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
-    public Long getNumber(String path) {
-        return super.getNumber(path);
-    }
-
-    @Override
-    public Boolean getBoolean(String path) {
-        return super.getBoolean(path);
-    }
-
-    @Override
-    public <E> Map<String, E> getMap(String path) {
-        return super.getMap(path);
-    }
-
-    @Override
-    public <E> List<E> getList(String path) {
-        return super.getList(path);
-    }
-
-    @Override
-    public <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
-        return super.getEntity(path, supplier);
-    }
-
-    @Override
-    public <R extends JsonEntity<R>> List<R> getEntities(String path, Supplier<R> supplier) {
-        return super.getEntities(path, supplier);
-    }
-
-    @Override
-    public <R> R getObject(String path) {
-        return super.getObject(path);
-    }
-
-    @Override
     public JsonBean putString(String path, String value) {
         return super.putString(path, value);
+    }
+
+    @Override
+    public Long getNumber(String path) {
+        return super.getNumber(path);
     }
 
     @Override
@@ -81,8 +51,18 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public Boolean getBoolean(String path) {
+        return super.getBoolean(path);
+    }
+
+    @Override
     public JsonBean putBoolean(String path, Boolean value) {
         return super.putBoolean(path, value);
+    }
+
+    @Override
+    public <E> Map<String, E> getMap(String path) {
+        return super.getMap(path);
     }
 
     @Override
@@ -91,8 +71,23 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public JsonBean mergeMap(Map<String, ?> value) {
+        return super.mergeMap(value);
+    }
+
+    @Override
+    public <E> List<E> getList(String path) {
+        return super.getList(path);
+    }
+
+    @Override
     public JsonBean putList(String path, List<?> value) {
         return super.putList(path, value);
+    }
+
+    @Override
+    public <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
+        return super.getEntity(path, supplier);
     }
 
     @Override
@@ -101,8 +96,23 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public JsonBean mergeEntity(JsonEntity<?> entity) {
+        return super.mergeEntity(entity);
+    }
+
+    @Override
+    public <R extends JsonEntity<R>> List<R> getEntities(String path, Supplier<R> supplier) {
+        return super.getEntities(path, supplier);
+    }
+
+    @Override
     public JsonBean putEntities(String path, List<? extends JsonEntity<?>> entities) {
         return super.putEntities(path, entities);
+    }
+
+    @Override
+    public <R> R getObject(String path) {
+        return super.getObject(path);
     }
 
     @Override
@@ -113,16 +123,6 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     @Override
     public JsonBean remove(String path) {
         return super.remove(path);
-    }
-
-    @Override
-    public JsonBean mergeMap(Map<String, ?> value) {
-        return super.mergeMap(value);
-    }
-
-    @Override
-    public JsonBean mergeEntity(JsonEntity<?> entity) {
-        return super.mergeEntity(entity);
     }
 
 }
