@@ -19,9 +19,9 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.Optional;
 
 @UtilityClass
@@ -30,7 +30,10 @@ public class JsonResources {
     @SneakyThrows
     public static String readResource(String name) {
         try (InputStream stream = getLoader().getResourceAsStream(resolveName(name))) {
-            return IOUtils.toString(Objects.requireNonNull(stream), StandardCharsets.UTF_8);
+            if (stream == null) {
+                throw new IOException("Resource not found");
+            }
+            return IOUtils.toString(stream, StandardCharsets.UTF_8);
         }
     }
 
