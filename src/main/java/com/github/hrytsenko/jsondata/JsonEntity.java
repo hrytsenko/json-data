@@ -32,14 +32,16 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_SINGLE_QUOTES;
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
 
 public abstract class JsonEntity<T extends JsonEntity<T>> {
 
-    public static final JacksonJsonProvider PROVIDER =
+    private static final JacksonJsonProvider PROVIDER =
             new JacksonJsonProvider(
                     new ObjectMapper()
                             .configure(USE_LONG_FOR_INTS, true)
+                            .configure(ALLOW_SINGLE_QUOTES, true)
             );
 
     private static final Configuration CONFIGURATION =
