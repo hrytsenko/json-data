@@ -21,6 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -62,7 +63,7 @@ class JsonEntityTest {
 
     @ParameterizedTest
     @MethodSource("equals_testData")
-    void equals(TestEntity sourceLeft, TestEntity sourceRight, boolean expectedResult) {
+    void equals(Object sourceLeft, Object sourceRight, boolean expectedResult) {
         boolean actualResult = Objects.equals(sourceLeft, sourceRight);
 
         Assertions.assertEquals(expectedResult, actualResult);
@@ -78,6 +79,11 @@ class JsonEntityTest {
                 Arguments.of(
                         JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new),
                         JsonParser.stringToEntity("{'foo':'BAR'}", TestEntity::new),
+                        false
+                ),
+                Arguments.of(
+                        JsonParser.stringToEntity("{}", TestEntity::new),
+                        Map.of(),
                         false
                 ),
                 Arguments.of(
@@ -108,18 +114,31 @@ class JsonEntityTest {
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
+    static class InvalidEntity_EmptyConstructorIsAbsent extends JsonEntity<InvalidEntity_EmptyConstructorIsAbsent> {
+        InvalidEntity_EmptyConstructorIsAbsent(String any) {
+        }
+    }
+
     @Test
     void factory_create_emptyConstructorIsAbsent() {
-        class InvalidEntity extends JsonEntity<InvalidEntity> {
-            InvalidEntity(String any) {
-            }
-        }
-
         Assertions.assertThrows(
                 NoSuchMethodException.class,
-                () -> new JsonEntity.Factory(InvalidEntity.class)
-        );
+                () -> new JsonEntity.Factory(InvalidEntity_EmptyConstructorIsAbsent.class));
+    }
 
+    static class InvalidEntity_EmptyConstructorIsFaulty extends JsonEntity<InvalidEntity_EmptyConstructorIsFaulty> {
+        InvalidEntity_EmptyConstructorIsFaulty() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    @Test
+    void factory_create_emptyConstructorIsInvalid() {
+        JsonEntity.Factory sourceFactory = new JsonEntity.Factory(InvalidEntity_EmptyConstructorIsFaulty.class);
+
+        Assertions.assertThrows(
+                InvocationTargetException.class,
+                sourceFactory::create);
     }
 
 }
