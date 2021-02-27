@@ -36,7 +36,7 @@ class JsonBeanTest {
     }
 
     @ParameterizedTest
-    @MethodSource("contains_data")
+    @MethodSource("contains_testData")
     void contains(String sourceJson, String sourcePath, boolean expectedResult) {
         JsonBean sourceBean = JsonParser.stringToEntity(sourceJson, JsonBean::create);
 
@@ -45,7 +45,7 @@ class JsonBeanTest {
         Assertions.assertEquals(expectedResult, actualResult);
     }
 
-    private static Stream<Arguments> contains_data() {
+    private static Stream<Arguments> contains_testData() {
         return Stream.of(
                 Arguments.of("{}", "foo", false),
                 Arguments.of("{'foo':null}", "foo", false),

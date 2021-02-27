@@ -36,7 +36,7 @@ class JsonMapperTest {
     }
 
     @ParameterizedTest
-    @MethodSource("mapEntity_data")
+    @MethodSource("mapEntity_testData")
     void mapEntity(String sourceSchema, String sourceJson, String expectedJson) {
         JsonBean sourceEntity = JsonParser.stringToEntity(sourceJson, JsonBean::create);
 
@@ -47,7 +47,7 @@ class JsonMapperTest {
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
-    private static Stream<Arguments> mapEntity_data() {
+    private static Stream<Arguments> mapEntity_testData() {
         return Stream.of(
                 Arguments.of(
                         "[{'operation':'shift','spec':{'foo':'bar'}},{'operation':'default','spec':{}}]",
@@ -74,7 +74,7 @@ class JsonMapperTest {
     }
 
     @ParameterizedTest
-    @MethodSource("mapEntities_data")
+    @MethodSource("mapEntities_testData")
     void mapEntities(String sourceSchema, String sourceJson, String expectedJson) {
         List<JsonBean> sourceEntity = JsonParser.stringToEntities(sourceJson, JsonBean::create);
 
@@ -85,7 +85,7 @@ class JsonMapperTest {
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
-    private static Stream<Arguments> mapEntities_data() {
+    private static Stream<Arguments> mapEntities_testData() {
         return Stream.of(
                 Arguments.of(
                         "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}},{'operation':'default','spec':{}}]",
@@ -102,13 +102,14 @@ class JsonMapperTest {
 
     @Test
     void mapEntities_undefinedOutput() {
-        JsonBean sourceEntity = JsonBean.create();
+        List<JsonBean> sourceEntities = List.of(JsonBean.create());
         String sourceSchema = "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]";
 
         JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+
         Assertions.assertThrows(
                 JsonMapperException.class,
-                () -> mapper.map(List.of(sourceEntity)));
+                () -> mapper.map(sourceEntities));
     }
 
 }

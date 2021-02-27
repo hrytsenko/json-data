@@ -97,14 +97,14 @@ class JsonParserTest {
     }
 
     @ParameterizedTest
-    @MethodSource("listToEntities_data")
+    @MethodSource("listToEntities_testData")
     void listToEntities(List<Map<String, ?>> sourceList, List<JsonBean> expectedEntities) {
         List<JsonBean> actualEntities = JsonParser.listToEntities(sourceList, JsonBean::create);
 
         Assertions.assertEquals(expectedEntities, actualEntities);
     }
 
-    private static Stream<Arguments> listToEntities_data() {
+    private static Stream<Arguments> listToEntities_testData() {
         return Stream.of(
                 Arguments.of(
                         JsonParser.stringToList("[{'foo':'FOO'}]"),
@@ -128,14 +128,14 @@ class JsonParserTest {
     }
 
     @ParameterizedTest
-    @MethodSource("entitiesToList_data")
+    @MethodSource("entitiesToList_testData")
     void entitiesToList(List<JsonBean> sourceEntities, List<Map<String, ?>> expectedList) {
         List<Map<String, ?>> actualList = JsonParser.entitiesToList(sourceEntities);
 
         Assertions.assertEquals(expectedList, actualList);
     }
 
-    private static Stream<Arguments> entitiesToList_data() {
+    private static Stream<Arguments> entitiesToList_testData() {
         return Stream.of(
                 Arguments.of(
                         JsonParser.stringToEntities("[{'foo':'FOO'}]", JsonBean::create),
