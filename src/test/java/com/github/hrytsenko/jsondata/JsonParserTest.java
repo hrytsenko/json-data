@@ -111,8 +111,8 @@ class JsonParserTest {
                         JsonParser.stringToEntities("[{'foo':'FOO'}]", JsonBean::create)
                 ),
                 Arguments.of(
-                        JsonParser.stringToList("[{'foo':'FOO'},null]"),
-                        JsonParser.stringToEntities("[{'foo':'FOO'},null]", JsonBean::create)
+                        JsonParser.stringToList("[null]"),
+                        JsonParser.stringToEntities("[null]", JsonBean::create)
                 )
         );
     }
@@ -142,8 +142,8 @@ class JsonParserTest {
                         JsonParser.stringToList("[{'foo':'FOO'}]")
                 ),
                 Arguments.of(
-                        JsonParser.stringToEntities("[{'foo':'FOO'},null]", JsonBean::create),
-                        JsonParser.stringToList("[{'foo':'FOO'},null]")
+                        JsonParser.stringToEntities("[null]", JsonBean::create),
+                        JsonParser.stringToList("[null]")
                 )
         );
     }

@@ -34,7 +34,7 @@ class JsonResourcesTest {
     }
 
     @Test
-    void readResource_fileIsAbsent() {
+    void readResource_absentFile() {
         Assertions.assertThrows(
                 IOException.class,
                 () -> JsonResources.readResource("absent.json")

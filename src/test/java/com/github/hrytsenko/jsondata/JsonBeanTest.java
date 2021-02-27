@@ -23,7 +23,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import static com.github.hrytsenko.jsondata.JsonParser.stringToEntities;
+import static com.github.hrytsenko.jsondata.JsonParser.stringToEntity;
 
 class JsonBeanTest {
 
@@ -31,14 +35,14 @@ class JsonBeanTest {
     void create() {
         JsonBean actualBean = JsonBean.create();
 
-        JsonBean expectedBean = JsonParser.stringToEntity("{}", JsonBean::create);
+        JsonBean expectedBean = stringToEntity("{}", JsonBean::create);
         Assertions.assertEquals(expectedBean, actualBean);
     }
 
     @ParameterizedTest
     @MethodSource("contains_testData")
     void contains(String sourceJson, String sourcePath, boolean expectedResult) {
-        JsonBean sourceBean = JsonParser.stringToEntity(sourceJson, JsonBean::create);
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
 
         boolean actualResult = sourceBean.contains(sourcePath);
 
@@ -54,18 +58,178 @@ class JsonBeanTest {
     }
 
     @ParameterizedTest
-    @MethodSource("put_data")
-    void put(String sourceJson, String sourcePath, String sourceObject, String expectedJson) {
-        JsonBean sourceBean = JsonParser.stringToEntity(sourceJson, JsonBean::create);
+    @MethodSource("getValue_testData")
+    void getValue(String sourceJson, Function<JsonBean, Object> targetFunction, Object expectedValue) {
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
 
-        JsonBean actualBean = sourceBean.putObject(sourcePath, sourceObject);
+        Object actualValue = targetFunction.apply(sourceBean);
 
-        JsonBean expectedBean = JsonParser.stringToEntity(expectedJson, JsonBean::create);
+        Assertions.assertEquals(expectedValue, actualValue);
+    }
+
+    private static Stream<Arguments> getValue_testData() {
+        return Stream.of(
+                Arguments.of(
+                        "{'foo':'FOO'}",
+                        (Function<JsonBean, Object>) bean -> bean.getString("foo"),
+                        "FOO"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getString("foo"),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':true}",
+                        (Function<JsonBean, Object>) bean -> bean.getBoolean("foo"),
+                        true
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getBoolean("foo"),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':1}",
+                        (Function<JsonBean, Object>) bean -> bean.getNumber("foo"),
+                        1L
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getNumber("foo"),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':{}}",
+                        (Function<JsonBean, Object>) bean -> bean.getMap("foo"),
+                        Map.of()
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getMap("foo"),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':[]}",
+                        (Function<JsonBean, Object>) bean -> bean.getList("foo"),
+                        List.of()
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getList("foo"),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':{'bar':'BAR'}}",
+                        (Function<JsonBean, Object>) bean -> bean.getEntity("foo", JsonBean::create),
+                        stringToEntity("{'bar':'BAR'}", JsonBean::create)
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getEntity("foo", JsonBean::create),
+                        null
+                ),
+                Arguments.of(
+                        "{'foo':[{'bar':'BAR'}]}",
+                        (Function<JsonBean, Object>) bean -> bean.getEntities("foo", JsonBean::create),
+                        stringToEntities("[{'bar':'BAR'}]", JsonBean::create)
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, Object>) bean -> bean.getEntities("foo", JsonBean::create),
+                        null
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("putValue_testData")
+    void putValue(String sourceJson, Function<JsonBean, JsonBean> targetFunction, String expectedJson) {
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
+
+        JsonBean actualBean = targetFunction.apply(sourceBean);
+
+        JsonBean expectedBean = stringToEntity(expectedJson, JsonBean::create);
         Assertions.assertEquals(expectedBean, actualBean);
     }
 
-    private static Stream<Arguments> put_data() {
+    private static Stream<Arguments> putValue_testData() {
         return Stream.of(
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putString("foo", "FOO"),
+                        "{'foo':'FOO'}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putNumber("foo", 1L),
+                        "{'foo':1}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putBoolean("foo", true),
+                        "{'foo':true}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putMap("foo", Map.of()),
+                        "{'foo':{}}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putList("foo", List.of()),
+                        "{'foo':[]}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putEntity("foo", JsonBean.create()),
+                        "{'foo':{}}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putEntities("foo", List.of(JsonBean.create())),
+                        "{'foo':[{}]}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.mergeEntity(stringToEntity("{'foo':'FOO'}", JsonBean::create)),
+                        "{'foo':'FOO'}"
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getObject_testData")
+    void getObject(String sourceJson, String sourcePath, Object expectedObject) {
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
+
+        Object actualObject = sourceBean.getObject(sourcePath);
+
+        Assertions.assertEquals(expectedObject, actualObject);
+    }
+
+    private static Stream<Arguments> getObject_testData() {
+        return Stream.of(
+                Arguments.of("{}", "foo", null),
+                Arguments.of("{'foo':'FOO'}", "foo", "FOO"),
+                Arguments.of("{'foo':{'bar':'BAR'}}", "foo.bar", "BAR")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("putObject_testData")
+    void putObject(String sourceJson, String sourcePath, Object sourceObject, String expectedJson) {
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
+
+        JsonBean actualBean = sourceBean.putObject(sourcePath, sourceObject);
+
+        JsonBean expectedBean = stringToEntity(expectedJson, JsonBean::create);
+        Assertions.assertEquals(expectedBean, actualBean);
+    }
+
+    private static Stream<Arguments> putObject_testData() {
+        return Stream.of(
+                Arguments.of("{}", "foo", null, "{'foo':null}"),
                 Arguments.of("{}", "foo", "FOO", "{'foo':'FOO'}"),
                 Arguments.of("{'foo':'FOO'}", "foo", "BAR", "{'foo':'BAR'}"),
                 Arguments.of("{}", "foo.bar", "FOO", "{'foo':{'bar':'FOO'}}"),
@@ -74,186 +238,22 @@ class JsonBeanTest {
     }
 
     @ParameterizedTest
-    @MethodSource("remove_data")
+    @MethodSource("remove_testData")
     void remove(String sourceJson, String sourcePath, String expectedJson) {
-        JsonBean sourceBean = JsonParser.stringToEntity(sourceJson, JsonBean::create);
+        JsonBean sourceBean = stringToEntity(sourceJson, JsonBean::create);
 
         JsonBean actualBean = sourceBean.remove(sourcePath);
 
-        JsonBean expectedBean = JsonParser.stringToEntity(expectedJson, JsonBean::create);
+        JsonBean expectedBean = stringToEntity(expectedJson, JsonBean::create);
         Assertions.assertEquals(expectedBean, actualBean);
     }
 
-    private static Stream<Arguments> remove_data() {
+    private static Stream<Arguments> remove_testData() {
         return Stream.of(
                 Arguments.of("{}", "foo", "{}"),
                 Arguments.of("{'foo':'FOO'}", "foo", "{}"),
                 Arguments.of("{'foo':{'bar':'FOO'}}", "foo.bar", "{'foo':{}}")
         );
-    }
-
-    @Test
-    void handleString() {
-        String sourceValue = "FOO";
-
-        JsonBean actualBean = JsonBean.create().putString("foo", sourceValue);
-        String actualValue = actualBean.getString("foo");
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleString_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        String actualValue = sourceBean.getString("foo");
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleNumber() {
-        long sourceValue = 1L;
-
-        JsonBean actualBean = JsonBean.create().putNumber("foo", sourceValue);
-        Long actualValue = actualBean.getNumber("foo");
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleNumber_integer() {
-        JsonBean sourceBean = JsonBean.create().fromMap(Map.of("foo", 1));
-
-        Long actualValue = sourceBean.getNumber("foo");
-
-        long expectedValue = 1L;
-        Assertions.assertEquals(expectedValue, actualValue);
-    }
-
-    @Test
-    void handleNumber_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        Long actualValue = sourceBean.getNumber("foo");
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleBoolean() {
-        boolean sourceValue = true;
-
-        JsonBean actualBean = JsonBean.create().putBoolean("foo", sourceValue);
-        Boolean actualValue = actualBean.getBoolean("foo");
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleBoolean_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        Boolean actualValue = sourceBean.getBoolean("foo");
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleMap() {
-        Map<String, ?> sourceValue = Map.of("bar", "BAR");
-
-        JsonBean actualBean = JsonBean.create().putMap("foo", sourceValue);
-        Map<String, Object> actualValue = actualBean.getMap("foo");
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleMap_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        Map<String, ?> actualValue = sourceBean.getMap("foo");
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleList() {
-        List<String> sourceValue = List.of("FOO");
-
-        JsonBean actualBean = JsonBean.create().putList("foo", sourceValue);
-        List<Object> actualValue = actualBean.getList("foo");
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleList_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        List<Object> actualValue = sourceBean.getList("absent");
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleEntity() {
-        JsonBean sourceValue = JsonBean.create()
-                .putString("bar", "BAR");
-
-        JsonBean actualBean = JsonBean.create().putEntity("foo", sourceValue);
-        JsonBean actualValue = actualBean.getEntity("foo", JsonBean::create);
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleEntity_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        JsonBean actualValue = sourceBean.getEntity("foo", JsonBean::create);
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void handleEntities() {
-        List<JsonBean> sourceValue = JsonParser.stringToEntities("[{'bar':'BAR'}]", JsonBean::create);
-
-        JsonBean actualBean = JsonBean.create().putEntities("foo", sourceValue);
-        List<JsonBean> actualValue = actualBean.getEntities("foo", JsonBean::create);
-
-        Assertions.assertEquals(sourceValue, actualValue);
-    }
-
-    @Test
-    void handleEntities_absent() {
-        JsonBean sourceBean = JsonBean.create();
-
-        List<JsonBean> actualValue = sourceBean.getEntities("foo", JsonBean::create);
-
-        Assertions.assertNull(actualValue);
-    }
-
-    @Test
-    void mergeEntities() {
-        JsonBean actualBean = JsonBean.create()
-                .mergeEntity(JsonParser.stringToEntity("{'foo':'FOO'}", JsonBean::create))
-                .mergeEntity(JsonParser.stringToEntity("{'bar':'BAR'}", JsonBean::create));
-
-        JsonBean expectedBean = JsonParser.stringToEntity("{'foo':'FOO','bar':'BAR'}", JsonBean::create);
-        Assertions.assertEquals(expectedBean, actualBean);
-    }
-
-    @Test
-    void factory() {
-        JsonEntity.Factory sourceFactory = new JsonEntity.Factory(JsonBean.class);
-
-        JsonBean actualEntity = (JsonBean) sourceFactory.create();
-
-        JsonBean expectedEntity = JsonParser.stringToEntity("{}", JsonBean::create);
-        Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
 }

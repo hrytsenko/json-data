@@ -114,27 +114,27 @@ class JsonEntityTest {
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
-    static class InvalidEntity_EmptyConstructorIsAbsent extends JsonEntity<InvalidEntity_EmptyConstructorIsAbsent> {
-        InvalidEntity_EmptyConstructorIsAbsent(String any) {
+    static class EntityWithInvalidConstructor extends JsonEntity<EntityWithInvalidConstructor> {
+        EntityWithInvalidConstructor(String any) {
         }
     }
 
     @Test
-    void factory_create_emptyConstructorIsAbsent() {
+    void factory_create_invalidConstructor() {
         Assertions.assertThrows(
                 NoSuchMethodException.class,
-                () -> new JsonEntity.Factory(InvalidEntity_EmptyConstructorIsAbsent.class));
+                () -> new JsonEntity.Factory(EntityWithInvalidConstructor.class));
     }
 
-    static class InvalidEntity_EmptyConstructorIsFaulty extends JsonEntity<InvalidEntity_EmptyConstructorIsFaulty> {
-        InvalidEntity_EmptyConstructorIsFaulty() {
+    static class EntityWithFaultyConstructor extends JsonEntity<EntityWithFaultyConstructor> {
+        EntityWithFaultyConstructor() {
             throw new UnsupportedOperationException();
         }
     }
 
     @Test
-    void factory_create_emptyConstructorIsInvalid() {
-        JsonEntity.Factory sourceFactory = new JsonEntity.Factory(InvalidEntity_EmptyConstructorIsFaulty.class);
+    void factory_create_faultyConstructor() {
+        JsonEntity.Factory sourceFactory = new JsonEntity.Factory(EntityWithFaultyConstructor.class);
 
         Assertions.assertThrows(
                 InvocationTargetException.class,
