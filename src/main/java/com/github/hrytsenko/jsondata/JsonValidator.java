@@ -15,6 +15,7 @@
  */
 package com.github.hrytsenko.jsondata;
 
+import jakarta.json.JsonReader;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,7 +24,6 @@ import org.leadpony.justify.api.JsonSchema;
 import org.leadpony.justify.api.JsonValidationService;
 import org.leadpony.justify.api.ProblemHandler;
 
-import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.Map;

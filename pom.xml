@@ -37,15 +37,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <json-jackson.version>2.11.0</json-jackson.version>
-        <json-path.version>2.4.0</json-path.version>
+        <json-jackson.version>2.12.1</json-jackson.version>
+        <json-path.version>2.5.0</json-path.version>
         <json-jolt.version>0.1.1</json-jolt.version>
-        <json-justify.version>2.1.0</json-justify.version>
-        <json-jakarta.version>1.1.6</json-jakarta.version>
+        <json-justify.version>3.1.0</json-justify.version>
+        <json-jakarta.version>2.0.0</json-jakarta.version>
         <commons-io.version>2.7</commons-io.version>
 
-        <lombock.version>1.18.12</lombock.version>
-        <junit.version>5.6.2</junit.version>
+        <lombock.version>1.18.18</lombock.version>
+        <junit.version>5.7.1</junit.version>
     </properties>
 
     <dependencyManagement>
@@ -185,7 +185,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.5</version>
+                        <version>0.8.6</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
