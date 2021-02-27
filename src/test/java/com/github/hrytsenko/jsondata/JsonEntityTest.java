@@ -17,8 +17,13 @@ package com.github.hrytsenko.jsondata;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 class JsonEntityTest {
 
@@ -55,22 +60,32 @@ class JsonEntityTest {
         Assertions.assertEquals(expectedJson, actualJson);
     }
 
-    @Test
-    void equals() {
-        TestEntity thisEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
-        TestEntity otherEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
+    @ParameterizedTest
+    @MethodSource("equals_testData")
+    void equals(TestEntity sourceLeft, TestEntity sourceRight, boolean expectedResult) {
+        boolean actualResult = Objects.equals(sourceLeft, sourceRight);
 
-        Assertions.assertEquals(thisEntity, thisEntity);
-        Assertions.assertEquals(thisEntity, otherEntity);
+        Assertions.assertEquals(expectedResult, actualResult);
     }
 
-    @Test
-    void notEquals() {
-        TestEntity thisEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
-        TestEntity otherEntity = JsonParser.stringToEntity("{'foo':'BAR'}", TestEntity::new);
-
-        Assertions.assertNotEquals(thisEntity, new Object());
-        Assertions.assertNotEquals(thisEntity, otherEntity);
+    private static Stream<Arguments> equals_testData() {
+        return Stream.of(
+                Arguments.of(
+                        JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new),
+                        JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new),
+                        true
+                ),
+                Arguments.of(
+                        JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new),
+                        JsonParser.stringToEntity("{'foo':'BAR'}", TestEntity::new),
+                        false
+                ),
+                Arguments.of(
+                        JsonParser.stringToEntity("{}", TestEntity::new),
+                        null,
+                        false
+                )
+        );
     }
 
     @Test
@@ -91,6 +106,20 @@ class JsonEntityTest {
 
         TestEntity expectedEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
         Assertions.assertEquals(expectedEntity, actualEntity);
+    }
+
+    @Test
+    void factory_create_emptyConstructorIsAbsent() {
+        class InvalidEntity extends JsonEntity<InvalidEntity> {
+            InvalidEntity(String any) {
+            }
+        }
+
+        Assertions.assertThrows(
+                NoSuchMethodException.class,
+                () -> new JsonEntity.Factory(InvalidEntity.class)
+        );
+
     }
 
 }
