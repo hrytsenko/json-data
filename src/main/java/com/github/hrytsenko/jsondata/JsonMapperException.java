@@ -15,6 +15,9 @@
  */
 package com.github.hrytsenko.jsondata;
 
+/**
+ * <p>This exception is thrown by {@link JsonMapper} in case of transformation errors.
+ */
 public class JsonMapperException extends RuntimeException {
 
     public JsonMapperException(String message, Throwable cause) {

@@ -24,6 +24,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+/**
+ * <p>This class provides utilities to read schemas from resources for {@link JsonMapper} and {@link JsonValidator}.
+ */
 @UtilityClass
 public class JsonResources {
 

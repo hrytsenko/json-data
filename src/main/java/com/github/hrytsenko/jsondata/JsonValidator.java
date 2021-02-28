@@ -28,6 +28,9 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p>This class provides utilities to validate a single JSON entity or a list of JSON entities via JSON schema.
+ */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class JsonValidator {

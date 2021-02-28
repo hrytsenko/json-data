@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * <p>This class implements a generic JSON entity.
+ */
 public final class JsonBean extends JsonEntity<JsonBean> {
 
     public static JsonBean create() {

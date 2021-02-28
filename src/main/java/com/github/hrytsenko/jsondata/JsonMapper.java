@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * <p>This class provides utilities to transform a single JSON entity or a list of JSON entities via Jolt schema.
+ */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class JsonMapper<R extends JsonEntity<R>> {

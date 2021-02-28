@@ -35,6 +35,31 @@ import java.util.stream.Collectors;
 import static com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_SINGLE_QUOTES;
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
 
+/**
+ * <p>This class is a base class for all JSON entities.
+ * It uses the F-bounded quantification to enable a fluent interface for generic getters and setters:
+ * <pre>
+ *     class Entity extends JsonEntity&lt;Entity&gt; {
+ *         public String getName() {
+ *             return getString("entity.name");
+ *         }
+ *     }
+ * </pre>
+ *
+ * <p> JSON entities must utilize a default constructor and avoid any explicit constructors.
+ * This enables integration with third party libraries that may need to instantiate JSON entities.
+ * JSON entities must use static factory methods instead of constructors for custom initialization behavior:
+ * <pre>
+ *     class Entity extends JsonEntity&lt;Entity&gt; {
+ *         public static create(String name) {
+ *             return new Entity()
+ *                 .putString("entity.name", name);
+ *         }
+ *     }
+ * </pre>
+ *
+ * @param <T> the type of the JSON entity
+ */
 public abstract class JsonEntity<T extends JsonEntity<T>> {
 
     private static final JacksonJsonProvider PROVIDER =

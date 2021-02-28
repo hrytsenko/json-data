@@ -20,6 +20,9 @@ import lombok.experimental.UtilityClass;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
+/**
+ * <p>This class provides utilities to wrap exceptions for {@link JsonParser}, {@link JsonMapper} and {@link JsonValidator}.
+ */
 @UtilityClass
 class JsonExceptions {
 

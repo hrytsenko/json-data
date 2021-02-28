@@ -33,6 +33,9 @@ import java.util.stream.Collectors;
 import static com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_SINGLE_QUOTES;
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
 
+/**
+ * <p>This class provides utilities to serialize and deserialize JSON entities.
+ */
 @UtilityClass
 public class JsonParser {
 
