@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>This class provides utilities to validate a single JSON entity or a list of JSON entities via JSON schema.
+ * <p>Class {@link JsonValidator} validates JSON entities via a JSON schema.
+ *
+ * <p><b>JSON validators are immutable and thread-safe.</b>
+ * By default, reuse instances of JSON validators where possible.
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)

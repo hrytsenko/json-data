@@ -26,7 +26,10 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * <p>This class provides utilities to transform a single JSON entity or a list of JSON entities via Jolt schema.
+ * <p>Class {@link JsonMapper} transforms JSON entities via a Jolt schema.
+ *
+ * <p><b>JSON mappers are immutable and thread-safe.</b>
+ * By default, reuse instances of JSON mappers where possible.
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
