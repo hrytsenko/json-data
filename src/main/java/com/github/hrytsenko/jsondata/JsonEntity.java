@@ -243,7 +243,7 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
 
     public static class Factory {
 
-        private Constructor<?> constructor;
+        private final Constructor<?> constructor;
 
         @SneakyThrows
         public Factory(Class<?> entityClass) {
