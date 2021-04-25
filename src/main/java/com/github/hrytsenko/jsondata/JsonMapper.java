@@ -27,9 +27,16 @@ import java.util.function.Supplier;
 
 /**
  * <p>Class {@link JsonMapper} transforms JSON entities via a Jolt schema.
+ * Use {@link JsonResources} to read Jolt schemas for JSON mappers.
+ * <pre>
+ * JsonMapper&lt;Entity&gt; mapper = JsonMapper.create(JsonResources.readResource("/schema.json"), Entity::new);
+ * </pre>
  *
  * <p><b>JSON mappers are immutable and thread-safe.</b>
  * By default, reuse instances of JSON mappers where possible.
+ * Note that JSON mappers cannot produce a null value.
+ *
+ * @param <R> the type of the output JSON entity.
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -85,7 +92,6 @@ public class JsonMapper<R extends JsonEntity<R>> {
         }
 
         private Map<String, ?> transform(Object json) {
-            Objects.requireNonNull(json, "Input is undefined");
             @SuppressWarnings("unchecked")
             Map<String, ?> output = (Map<String, ?>) schema.transform(json);
             Objects.requireNonNull(output, "Output is undefined (use default output)");

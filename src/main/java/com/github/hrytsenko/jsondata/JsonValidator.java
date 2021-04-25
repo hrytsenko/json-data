@@ -30,6 +30,10 @@ import java.util.Map;
 
 /**
  * <p>Class {@link JsonValidator} validates JSON entities via a JSON schema.
+ * Use {@link JsonResources} to read JSON schemas for JSON validators.
+ * <pre>
+ * JsonValidator validator = JsonValidator.create(JsonResources.readResource("/schema.json"));
+ * </pre>
  *
  * <p><b>JSON validators are immutable and thread-safe.</b>
  * By default, reuse instances of JSON validators where possible.

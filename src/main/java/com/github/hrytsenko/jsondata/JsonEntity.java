@@ -60,7 +60,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR
  * <p><b>JSON entities are mutable and not thread-safe.</b>
  * As well, JSON entities does not perform any copying for input or output objects.
  *
- * @param <T> the type of the JSON entity
+ * @param <T> the type of the JSON entity.
  */
 public abstract class JsonEntity<T extends JsonEntity<T>> {
 
