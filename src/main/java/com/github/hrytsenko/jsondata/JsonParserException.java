@@ -20,7 +20,7 @@ package com.github.hrytsenko.jsondata;
  */
 public class JsonParserException extends RuntimeException {
 
-    public JsonParserException(String message, Throwable cause) {
+    JsonParserException(String message, Throwable cause) {
         super(message, cause);
     }
 

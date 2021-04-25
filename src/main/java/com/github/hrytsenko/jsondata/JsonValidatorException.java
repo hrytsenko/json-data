@@ -20,7 +20,7 @@ package com.github.hrytsenko.jsondata;
  */
 public class JsonValidatorException extends RuntimeException {
 
-    public JsonValidatorException(String message, Throwable cause) {
+    JsonValidatorException(String message, Throwable cause) {
         super(message, cause);
     }
 

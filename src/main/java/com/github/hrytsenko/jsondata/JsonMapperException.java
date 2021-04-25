@@ -20,7 +20,7 @@ package com.github.hrytsenko.jsondata;
  */
 public class JsonMapperException extends RuntimeException {
 
-    public JsonMapperException(String message, Throwable cause) {
+    JsonMapperException(String message, Throwable cause) {
         super(message, cause);
     }
 
