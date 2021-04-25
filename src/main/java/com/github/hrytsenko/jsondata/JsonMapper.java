@@ -27,14 +27,13 @@ import java.util.function.Supplier;
 
 /**
  * <p>Class {@link JsonMapper} transforms JSON entities via a Jolt schema.
- * Use {@link JsonResources} to read Jolt schemas for JSON mappers.
  * <pre>
- * JsonMapper&lt;Entity&gt; mapper = JsonMapper.create(JsonResources.readResource("/schema.json"), Entity::new);
+ * JsonMapper&lt;Output&gt; mapper = JsonMapper.create(JsonResources.readResource("/schema.json"), Output::new);
+ * Output output = mapper.map(input);
  * </pre>
  *
- * <p><b>JSON mappers are immutable and thread-safe.</b>
- * By default, reuse instances of JSON mappers where possible.
- * Note that JSON mappers cannot produce a null value.
+ * <p><b>Instances of this class are immutable and thread-safe.</b>
+ * Reuse instances of this class where possible.
  *
  * @param <R> the type of the output JSON entity.
  */
@@ -45,18 +44,43 @@ public class JsonMapper<R extends JsonEntity<R>> {
     Provider provider;
     Supplier<R> supplier;
 
+    /**
+     * Creates a JSON mapper for a given Jolt schema.
+     *
+     * @param schema   the Jolt schema for the transformation.
+     *                 Use {@link JsonResources} to read the Jolt schema.
+     * @param supplier the supplier for output JSON entities.
+     *                 Use a default constructor to create the supplier.
+     * @param <R>      the type of the output JSON entity.
+     * @return a new instance of a JSON mapper.
+     * @throws JsonMapperException if the Jolt schema is malformed.
+     */
     public static <R extends JsonEntity<R>> JsonMapper<R> create(String schema, Supplier<R> supplier) {
         return JsonExceptions.wrap(
                 () -> new JsonMapper<>(JoltProvider.create(schema), supplier),
                 exception -> new JsonMapperException("Configuration failed", exception));
     }
 
+    /**
+     * Transforms a JSON entity.
+     *
+     * @param entity the input Json entity.
+     * @return the output JSON entity.
+     * @throws JsonMapperException if the transformation is failed.
+     */
     public R map(JsonEntity<?> entity) {
         return JsonExceptions.wrap(
                 () -> JsonParser.mapToEntity(provider.mapObject(JsonParser.entityToMap(entity)), supplier),
                 exception -> new JsonMapperException("Transformation failed", exception));
     }
 
+    /**
+     * Transforms a list of JSON entities.
+     *
+     * @param entities the input list of JSON entities.
+     * @return the output JSON entity.
+     * @throws JsonMapperException if the transformation is failed.
+     */
     public R map(List<? extends JsonEntity<?>> entities) {
         return JsonExceptions.wrap(
                 () -> JsonParser.mapToEntity(provider.mapObjects(JsonParser.entitiesToList(entities)), supplier),

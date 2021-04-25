@@ -27,6 +27,12 @@ import java.util.function.Supplier;
  */
 public final class JsonBean extends JsonEntity<JsonBean> {
 
+    /**
+     * Creates a JSON bean.
+     *
+     * @return the created JSON bean.
+     * @implNote A synonym for a default constructor.
+     */
     public static JsonBean create() {
         return new JsonBean();
     }

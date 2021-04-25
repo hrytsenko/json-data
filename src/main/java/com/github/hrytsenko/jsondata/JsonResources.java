@@ -30,6 +30,13 @@ import java.util.Optional;
 @UtilityClass
 public class JsonResources {
 
+    /**
+     * Reads a resource content.
+     *
+     * @param name the resource name.
+     *             The leading slash is optional.
+     * @return the resource content.
+     */
     @SneakyThrows
     public static String readResource(String name) {
         try (InputStream stream = getLoader().getResourceAsStream(resolveName(name))) {

@@ -30,13 +30,13 @@ import java.util.Map;
 
 /**
  * <p>Class {@link JsonValidator} validates JSON entities via a JSON schema.
- * Use {@link JsonResources} to read JSON schemas for JSON validators.
  * <pre>
  * JsonValidator validator = JsonValidator.create(JsonResources.readResource("/schema.json"));
+ * validator.validate(input);
  * </pre>
  *
- * <p><b>JSON validators are immutable and thread-safe.</b>
- * By default, reuse instances of JSON validators where possible.
+ * <p><b>Instances of this class are immutable and thread-safe.</b>
+ * Reuse instances of this class where possible.
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -44,18 +44,38 @@ public class JsonValidator {
 
     Provider provider;
 
+    /**
+     * Creates a JSON validator from a given JSON schema.
+     *
+     * @param schema the JSON schema for the validation.
+     *               Use {@link JsonResources} to read the JSON schema.
+     * @return a new instance of a JSON validator.
+     * @throws JsonValidatorException if the JSON schema is malformed.
+     */
     public static JsonValidator create(String schema) {
         return JsonExceptions.wrap(
                 () -> new JsonValidator(JustifyProvider.create(schema)),
                 exception -> new JsonValidatorException("Configuration failed", exception));
     }
 
+    /**
+     * Validates a JSON entity.
+     *
+     * @param entity the input JSON entity.
+     * @throws JsonValidatorException if the validation is failed.
+     */
     public void validate(JsonEntity<?> entity) {
         JsonExceptions.wrap(
                 () -> provider.validateObject(JsonParser.entityToMap(entity)),
                 exception -> new JsonValidatorException("Validation failed", exception));
     }
 
+    /**
+     * Validates a list of JSON entities.
+     *
+     * @param entities the input list of JSON entities.
+     * @throws JsonValidatorException if the validation is failed.
+     */
     public void validate(List<? extends JsonEntity<?>> entities) {
         JsonExceptions.wrap(
                 () -> provider.validateObjects(JsonParser.entitiesToList(entities)),
