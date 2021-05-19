@@ -162,8 +162,18 @@ class JsonBeanTest {
                 ),
                 Arguments.of(
                         "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putString("foo", null),
+                        "{'foo':null}"
+                ),
+                Arguments.of(
+                        "{}",
                         (Function<JsonBean, JsonBean>) bean -> bean.putNumber("foo", 1L),
                         "{'foo':1}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putNumber("foo", null),
+                        "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
@@ -172,8 +182,18 @@ class JsonBeanTest {
                 ),
                 Arguments.of(
                         "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putBoolean("foo", null),
+                        "{'foo':null}"
+                ),
+                Arguments.of(
+                        "{}",
                         (Function<JsonBean, JsonBean>) bean -> bean.putMap("foo", Map.of()),
                         "{'foo':{}}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putMap("foo", null),
+                        "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
@@ -182,13 +202,28 @@ class JsonBeanTest {
                 ),
                 Arguments.of(
                         "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putList("foo", null),
+                        "{'foo':null}"
+                ),
+                Arguments.of(
+                        "{}",
                         (Function<JsonBean, JsonBean>) bean -> bean.putEntity("foo", JsonBean.create()),
                         "{'foo':{}}"
                 ),
                 Arguments.of(
                         "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putEntity("foo", null),
+                        "{'foo':null}"
+                ),
+                Arguments.of(
+                        "{}",
                         (Function<JsonBean, JsonBean>) bean -> bean.putEntities("foo", List.of(JsonBean.create())),
                         "{'foo':[{}]}"
+                ),
+                Arguments.of(
+                        "{}",
+                        (Function<JsonBean, JsonBean>) bean -> bean.putEntities("foo", null),
+                        "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",

@@ -103,17 +103,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a string value from a given path.
+     * Reads a string value (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
-     * @return the string value (or {@code null}).
+     * @return the string value.
      */
     protected String getString(String path) {
         return getObject(path);
     }
 
     /**
-     * Writes a string value to a given path.
+     * Writes a string value (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the string value to write.
@@ -124,10 +124,10 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a numerical value from a given path.
+     * Reads a numerical value (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
-     * @return the numerical value (or {@code null}).
+     * @return the numerical value.
      */
     protected Long getNumber(String path) {
         Number number = getObject(path);
@@ -138,7 +138,7 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Writes a numerical value to a given path.
+     * Writes a numerical value (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the numerical value to write.
@@ -149,17 +149,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a logical value from a given path.
+     * Reads a logical value (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
-     * @return the logical value (or {@code null}).
+     * @return the logical value.
      */
     protected Boolean getBoolean(String path) {
         return getObject(path);
     }
 
     /**
-     * Writes a logical value to a given path.
+     * Writes a logical value (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the logical value to write.
@@ -170,18 +170,18 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a plain map from a given path.
+     * Reads a plain map (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
      * @param <E>  the type of map values.
-     * @return the plain map (or {@code null}).
+     * @return the plain map.
      */
     protected <E> Map<String, E> getMap(String path) {
         return getObject(path);
     }
 
     /**
-     * Writes a plain map to a given path.
+     * Writes a plain map (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the plain map to write.
@@ -204,18 +204,18 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a plain list from a given path.
+     * Reads a plain list (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
      * @param <E>  the type of list elements.
-     * @return the plain list (or {@code null}).
+     * @return the plain list.
      */
     protected <E> List<E> getList(String path) {
         return getObject(path);
     }
 
     /**
-     * Writes a plain list to a given path.
+     * Writes a plain list (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the plain list to write.
@@ -226,13 +226,13 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a JSON entity from a given path.
+     * Reads a JSON entity (or {@code null}) from a given path.
      *
      * @param path     the JSON path to read.
      * @param supplier the supplier for the output JSON entity.
      *                 Use a default constructor to create the supplier.
      * @param <R>      the type of the output JSON entity.
-     * @return the JSON entity (or {@code null}).
+     * @return the JSON entity.
      */
     protected <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
         Map<String, ?> object = getMap(path);
@@ -243,13 +243,16 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Writes a JSON entity to a given path.
+     * Writes a JSON entity (or {@code null}) to a given path.
      *
      * @param path   the JSON path to write.
      * @param entity the JSON entity to write.
      * @return the current JSON entity.
      */
     protected T putEntity(String path, JsonEntity<?> entity) {
+        if (Objects.isNull(entity)) {
+            return putObject(path, null);
+        }
         Map<String, ?> object = entity.asMap();
         return putObject(path, object);
     }
@@ -265,13 +268,13 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads a list of JSON entities from a given path.
+     * Reads a list of JSON entities (or {@code null}) from a given path.
      *
      * @param path     the JSON path to read.
      * @param supplier the supplier for the output JSON entity.
      *                 Use a default constructor to create the supplier.
      * @param <R>      the type of the output JSON entity.
-     * @return the list of JSON entities (or {@code null}).
+     * @return the list of JSON entities.
      */
     protected <R extends JsonEntity<R>> List<R> getEntities(String path, Supplier<R> supplier) {
         List<Map<String, ?>> objects = getList(path);
@@ -284,13 +287,16 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Writes a list of JSON entities to a given path.
+     * Writes a list of JSON entities (or {@code null}) to a given path.
      *
      * @param path     the JSON path to write.
      * @param entities the list of JSON entities to write.
      * @return the current JSON entity.
      */
     protected T putEntities(String path, List<? extends JsonEntity<?>> entities) {
+        if (Objects.isNull(entities)) {
+            return putObject(path, null);
+        }
         List<Map<String, ?>> objects = entities.stream()
                 .map(JsonEntity::asMap)
                 .collect(Collectors.toList());
@@ -298,11 +304,11 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Reads an arbitrary object from a given path.
+     * Reads an arbitrary object (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
      * @param <R>  the type of the output object.
-     * @return the arbitrary object (or {@code null}).
+     * @return the arbitrary object.
      */
     protected <R> R getObject(String path) {
         try {
@@ -313,7 +319,7 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
-     * Writes the arbitrary object to a given path.
+     * Writes the arbitrary object (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
      * @param value the arbitrary object to write.
