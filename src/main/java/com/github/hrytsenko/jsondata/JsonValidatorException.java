@@ -16,7 +16,7 @@
 package com.github.hrytsenko.jsondata;
 
 /**
- * <p>CLass {@link JsonValidator} throws exception {@link JsonValidatorException} in case of validation errors.
+ * <p>Class {@link JsonValidator} throws exception {@link JsonValidatorException} in case of validation errors.
  */
 public class JsonValidatorException extends RuntimeException {
 

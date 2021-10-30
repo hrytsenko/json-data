@@ -45,7 +45,7 @@ public class JsonValidator {
     Provider provider;
 
     /**
-     * Creates a JSON validator from a given JSON schema.
+     * Creates a JSON validator for a given JSON schema.
      *
      * @param schema the JSON schema for the validation.
      *               Use {@link JsonResources} to read the JSON schema.

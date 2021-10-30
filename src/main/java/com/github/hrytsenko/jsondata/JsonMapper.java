@@ -64,7 +64,7 @@ public class JsonMapper<R extends JsonEntity<R>> {
     /**
      * Transforms a JSON entity.
      *
-     * @param entity the input Json entity.
+     * @param entity the input JSON entity.
      * @return the output JSON entity.
      * @throws JsonMapperException if the transformation is failed.
      */

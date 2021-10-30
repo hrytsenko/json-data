@@ -47,7 +47,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR
  *
  * <p>JSON entities use only a default constructor and avoid any explicit constructors.
  * This enables integration with third-party libraries that may need to instantiate JSON entities.
- * JSON entities may use static factory methods instead of constructors for custom initialization behavior:
+ * JSON entities may use static factory methods instead of constructors for custom initialization:
  * <pre>
  * class Entity extends JsonEntity&lt;Entity&gt; {
  *   public static create(String name) {

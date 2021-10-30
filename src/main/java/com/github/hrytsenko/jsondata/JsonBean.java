@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * <p>CLass {@link JsonBean} represents a generic JSON entity.
+ * <p>Class {@link JsonBean} is a generic JSON entity.
  *
  * <p>Use JSON beans as temporary entities with a limited scope and a short lifetime.
  * Otherwise, create a specific JSON entity.
