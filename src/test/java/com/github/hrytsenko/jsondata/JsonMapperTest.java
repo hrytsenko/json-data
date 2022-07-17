@@ -21,6 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -102,7 +103,7 @@ class JsonMapperTest {
 
     @Test
     void mapEntities_undefinedOutput() {
-        List<JsonBean> sourceEntities = List.of(JsonBean.create());
+        List<JsonBean> sourceEntities = Collections.singletonList(JsonBean.create());
         String sourceSchema = "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]";
 
         JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);

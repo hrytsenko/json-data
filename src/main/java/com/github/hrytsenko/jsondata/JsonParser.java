@@ -260,7 +260,7 @@ public class JsonParser {
 
         @SneakyThrows
         private <R> R read(String json) {
-            return objectMapper.readValue(json, new TypeReference<>() {
+            return objectMapper.readValue(json, new TypeReference<R>() {
             });
         }
 

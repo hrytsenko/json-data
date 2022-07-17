@@ -21,8 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -71,72 +70,86 @@ class JsonBeanTest {
         return Stream.of(
                 Arguments.of(
                         "{'foo':'FOO'}",
-                        (Function<JsonBean, Object>) bean -> bean.getString("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getString("foo"),
                         "FOO"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getString("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getString("foo"),
                         null
                 ),
                 Arguments.of(
                         "{'foo':true}",
-                        (Function<JsonBean, Object>) bean -> bean.getBoolean("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getBoolean("foo"),
                         true
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getBoolean("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getBoolean("foo"),
                         null
                 ),
                 Arguments.of(
                         "{'foo':1}",
-                        (Function<JsonBean, Object>) bean -> bean.getNumber("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getNumber("foo"),
                         1L
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getNumber("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getNumber("foo"),
                         null
                 ),
                 Arguments.of(
                         "{'foo':{}}",
-                        (Function<JsonBean, Object>) bean -> bean.getMap("foo"),
-                        Map.of()
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getMap("foo"),
+                        Collections.emptyMap()
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getMap("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getMap("foo"),
                         null
                 ),
                 Arguments.of(
                         "{'foo':[]}",
-                        (Function<JsonBean, Object>) bean -> bean.getList("foo"),
-                        List.of()
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getList("foo"),
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getList("foo"),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getList("foo"),
                         null
                 ),
                 Arguments.of(
                         "{'foo':{'bar':'BAR'}}",
-                        (Function<JsonBean, Object>) bean -> bean.getEntity("foo", JsonBean::create),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getEntity("foo", JsonBean::create),
                         stringToEntity("{'bar':'BAR'}", JsonBean::create)
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getEntity("foo", JsonBean::create),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getEntity("foo", JsonBean::create),
                         null
                 ),
                 Arguments.of(
                         "{'foo':[{'bar':'BAR'}]}",
-                        (Function<JsonBean, Object>) bean -> bean.getEntities("foo", JsonBean::create),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getEntities("foo", JsonBean::create),
                         stringToEntities("[{'bar':'BAR'}]", JsonBean::create)
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, Object>) bean -> bean.getEntities("foo", JsonBean::create),
+                        (Function<JsonBean, Object>) bean ->
+                            bean.getEntities("foo", JsonBean::create),
                         null
                 )
         );
@@ -157,77 +170,92 @@ class JsonBeanTest {
         return Stream.of(
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putString("foo", "FOO"),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putString("foo", "FOO"),
                         "{'foo':'FOO'}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putString("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putString("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putNumber("foo", 1L),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putNumber("foo", 1L),
                         "{'foo':1}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putNumber("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putNumber("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putBoolean("foo", true),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putBoolean("foo", true),
                         "{'foo':true}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putBoolean("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putBoolean("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putMap("foo", Map.of()),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putMap("foo", Collections.emptyMap()),
                         "{'foo':{}}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putMap("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putMap("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putList("foo", List.of()),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putList("foo", Collections.emptyList()),
                         "{'foo':[]}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putList("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putList("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putEntity("foo", JsonBean.create()),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putEntity("foo", JsonBean.create()),
                         "{'foo':{}}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putEntity("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putEntity("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putEntities("foo", List.of(JsonBean.create())),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putEntities("foo", Collections.singletonList(JsonBean.create())),
                         "{'foo':[{}]}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.putEntities("foo", null),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.putEntities("foo", null),
                         "{'foo':null}"
                 ),
                 Arguments.of(
                         "{}",
-                        (Function<JsonBean, JsonBean>) bean -> bean.mergeEntity(stringToEntity("{'foo':'FOO'}", JsonBean::create)),
+                        (Function<JsonBean, JsonBean>) bean ->
+                            bean.mergeEntity(stringToEntity("{'foo':'FOO'}", JsonBean::create)),
                         "{'foo':'FOO'}"
                 )
         );
