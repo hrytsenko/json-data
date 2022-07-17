@@ -21,6 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ class JsonParserTest {
 
         Map<String, ?> actualMap = JsonParser.stringToMap(sourceJson);
 
-        Map<String, ?> expectedMap = Map.of("foo", "FOO");
+        Map<String, ?> expectedMap = Collections.singletonMap("foo", "FOO");
         Assertions.assertEquals(expectedMap, actualMap);
     }
 
@@ -53,7 +54,7 @@ class JsonParserTest {
 
         List<Map<String, ?>> actualList = JsonParser.stringToList(sourceJson);
 
-        List<Map<String, ?>> expectedList = List.of(Map.of("foo", "FOO"));
+        List<Map<String, ?>> expectedList = Collections.singletonList(Collections.singletonMap("foo", "FOO"));
         Assertions.assertEquals(expectedList, actualList);
     }
 
@@ -72,7 +73,7 @@ class JsonParserTest {
 
         JsonBean actualEntity = JsonParser.stringToEntity(sourceJson, JsonBean::create);
 
-        JsonBean expectedEntity = JsonBean.create().fromMap(Map.of("foo", "FOO"));
+        JsonBean expectedEntity = JsonBean.create().fromMap(Collections.singletonMap("foo", "FOO"));
         Assertions.assertEquals(expectedEntity, actualEntity);
     }
 
@@ -82,7 +83,8 @@ class JsonParserTest {
 
         List<JsonBean> actualEntities = JsonParser.stringToEntities(sourceJson, JsonBean::create);
 
-        List<JsonBean> expectedEntities = List.of(JsonBean.create().fromMap(Map.of("foo", "FOO")));
+        List<JsonBean> expectedEntities = Collections.singletonList(
+            JsonBean.create().fromMap(Collections.singletonMap("foo", "FOO")));
         Assertions.assertEquals(expectedEntities, actualEntities);
     }
 
@@ -123,7 +125,7 @@ class JsonParserTest {
 
         Map<String, ?> actualMap = JsonParser.entityToMap(sourceEntity);
 
-        Map<String, ?> expectedMap = Map.of("foo", "FOO");
+        Map<String, ?> expectedMap = Collections.singletonMap("foo", "FOO");
         Assertions.assertEquals(expectedMap, actualMap);
     }
 
@@ -150,7 +152,7 @@ class JsonParserTest {
 
     @Test
     void mapToString() {
-        Map<String, ?> sourceMap = Map.of("foo", "FOO");
+        Map<String, ?> sourceMap = Collections.singletonMap("foo", "FOO");
 
         String actualJson = JsonParser.mapToString(sourceMap);
 
@@ -160,7 +162,7 @@ class JsonParserTest {
 
     @Test
     void mapToString_serializationFailed() {
-        Map<String, ?> sourceMap = Map.of("foo", new Object());
+        Map<String, ?> sourceMap = Collections.singletonMap("foo", new Object());
 
         Assertions.assertThrows(
                 JsonParserException.class,
@@ -169,7 +171,8 @@ class JsonParserTest {
 
     @Test
     void listToString() {
-        List<Map<String, ?>> sourceList = List.of(Map.of("foo", "FOO"));
+        List<Map<String, ?>> sourceList = Collections.singletonList(
+            Collections.singletonMap("foo", "FOO"));
 
         String actualJson = JsonParser.listToString(sourceList);
 
@@ -179,7 +182,8 @@ class JsonParserTest {
 
     @Test
     void listToString_serializationFailed() {
-        List<Map<String, ?>> sourceList = List.of(Map.of("foo", new Object()));
+        List<Map<String, ?>> sourceList = Collections.singletonList(
+            Collections.singletonMap("foo", new Object()));
 
         Assertions.assertThrows(
                 JsonParserException.class,

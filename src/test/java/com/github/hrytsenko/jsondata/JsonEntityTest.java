@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -83,7 +84,7 @@ class JsonEntityTest {
                 ),
                 Arguments.of(
                         JsonParser.stringToEntity("{}", TestEntity::new),
-                        Map.of(),
+                        Collections.emptyMap(),
                         false
                 ),
                 Arguments.of(
@@ -108,7 +109,7 @@ class JsonEntityTest {
     void factory_createFromMap() {
         JsonEntity.Factory sourceFactory = new JsonEntity.Factory(TestEntity.class);
 
-        TestEntity actualEntity = (TestEntity) sourceFactory.createFromMap(Map.of("foo", "FOO"));
+        TestEntity actualEntity = (TestEntity) sourceFactory.createFromMap(Collections.singletonMap("foo", "FOO"));
 
         TestEntity expectedEntity = JsonParser.stringToEntity("{'foo':'FOO'}", TestEntity::new);
         Assertions.assertEquals(expectedEntity, actualEntity);
