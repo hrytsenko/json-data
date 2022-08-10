@@ -113,6 +113,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
+     * Reads a string value from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @return the string value.
+     */
+    protected String getStringOrDefault(String path, String defaultValue) {
+        return getObjectOrDefault(path, defaultValue);
+    }
+
+    /**
      * Writes a string value (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
@@ -138,6 +149,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
+     * Reads a numerical value from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @return the numerical value.
+     */
+    protected Long getNumberOrDefault(String path, Long defaultValue) {
+        return getObjectOrDefault(path, defaultValue);
+    }
+
+    /**
      * Writes a numerical value (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
@@ -156,6 +178,17 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
      */
     protected Boolean getBoolean(String path) {
         return getObject(path);
+    }
+
+    /**
+     * Reads a logical value from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @return the logical value.
+     */
+    protected Boolean getBooleanOrDefault(String path, Boolean defaultValue) {
+        return getObjectOrDefault(path, defaultValue);
     }
 
     /**
@@ -178,6 +211,18 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
      */
     protected <E> Map<String, E> getMap(String path) {
         return getObject(path);
+    }
+
+    /**
+     * Reads a plain map from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @param <E>          the type of map values.
+     * @return the plain map.
+     */
+    protected <E> Map<String, E> getMapOrDefault(String path, Map<String, E> defaultValue) {
+        return getObjectOrDefault(path, defaultValue);
     }
 
     /**
@@ -215,6 +260,18 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
     }
 
     /**
+     * Reads a plain list from a given path or return a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @param <E>          the type of list elements.
+     * @return the plain list.
+     */
+    protected <E> List<E> getListOrDefault(String path, List<E> defaultValue) {
+        return getObjectOrDefault(path, defaultValue);
+    }
+
+    /**
      * Writes a plain list (or {@code null}) to a given path.
      *
      * @param path  the JSON path to write.
@@ -240,6 +297,20 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
             return null;
         }
         return supplier.get().fromMap(object);
+    }
+
+    /**
+     * Reads a JSON entity from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param supplier     the supplier for the output JSON entity.
+     * @param defaultValue the default value.
+     * @param <R>          the type of the output JSON entity.
+     * @return the JSON entity.
+     */
+    protected <R extends JsonEntity<R>> R getEntityOrDefault(String path, Supplier<R> supplier, R defaultValue) {
+        R value = getEntity(path, supplier);
+        return value != null ? value : defaultValue;
     }
 
     /**
@@ -272,7 +343,6 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
      *
      * @param path     the JSON path to read.
      * @param supplier the supplier for the output JSON entity.
-     *                 Use a default constructor to create the supplier.
      * @param <R>      the type of the output JSON entity.
      * @return the list of JSON entities.
      */
@@ -284,6 +354,20 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
         return objects.stream()
                 .map(json -> supplier.get().fromMap(json))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Reads a list of JSON entities from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param supplier     the supplier for the output JSON entity.
+     * @param defaultValue the default value.
+     * @param <R>          the type of the output JSON entity.
+     * @return the list of JSON entities.
+     */
+    protected <R extends JsonEntity<R>> List<R> getEntitiesOrDefault(String path, Supplier<R> supplier, List<R> defaultValue) {
+        List<R> value = getEntities(path, supplier);
+        return value != null ? value : defaultValue;
     }
 
     /**
@@ -307,7 +391,7 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
      * Reads an arbitrary object (or {@code null}) from a given path.
      *
      * @param path the JSON path to read.
-     * @param <R>  the type of the output object.
+     * @param <R>  the type of the object.
      * @return the arbitrary object.
      */
     protected <R> R getObject(String path) {
@@ -316,6 +400,19 @@ public abstract class JsonEntity<T extends JsonEntity<T>> {
         } catch (PathNotFoundException exception) {
             return null;
         }
+    }
+
+    /**
+     * Reads an arbitrary object from a given path or returns a default value.
+     *
+     * @param path         the JSON path to read.
+     * @param defaultValue the default value.
+     * @param <R>          the type of the object.
+     * @return the arbitrary object.
+     */
+    protected <R> R getObjectOrDefault(String path, R defaultValue) {
+        R value = getObject(path);
+        return value != null ? value : defaultValue;
     }
 
     /**

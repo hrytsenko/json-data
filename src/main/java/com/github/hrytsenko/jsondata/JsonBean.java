@@ -48,13 +48,23 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
-    public JsonBean putString(String path, String value) {
-        return super.putString(path, value);
+    public String getStringOrDefault(String path, String defaultValue) {
+        return super.getStringOrDefault(path, defaultValue);
+    }
+
+    @Override
+    public JsonBean putString(String path, String defaultValue) {
+        return super.putString(path, defaultValue);
     }
 
     @Override
     public Long getNumber(String path) {
         return super.getNumber(path);
+    }
+
+    @Override
+    public Long getNumberOrDefault(String path, Long defaultValue) {
+        return super.getNumberOrDefault(path, defaultValue);
     }
 
     @Override
@@ -68,6 +78,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public Boolean getBooleanOrDefault(String path, Boolean defaultValue) {
+        return super.getBooleanOrDefault(path, defaultValue);
+    }
+
+    @Override
     public JsonBean putBoolean(String path, Boolean value) {
         return super.putBoolean(path, value);
     }
@@ -75,6 +90,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     @Override
     public <E> Map<String, E> getMap(String path) {
         return super.getMap(path);
+    }
+
+    @Override
+    public <E> Map<String, E> getMapOrDefault(String path, Map<String, E> defaultValue) {
+        return super.getMapOrDefault(path, defaultValue);
     }
 
     @Override
@@ -93,6 +113,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public <E> List<E> getListOrDefault(String path, List<E> defaultValue) {
+        return super.getListOrDefault(path, defaultValue);
+    }
+
+    @Override
     public JsonBean putList(String path, List<?> value) {
         return super.putList(path, value);
     }
@@ -100,6 +125,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     @Override
     public <R extends JsonEntity<R>> R getEntity(String path, Supplier<R> supplier) {
         return super.getEntity(path, supplier);
+    }
+
+    @Override
+    public <R extends JsonEntity<R>> R getEntityOrDefault(String path, Supplier<R> supplier, R defaultValue) {
+        return super.getEntityOrDefault(path, supplier, defaultValue);
     }
 
     @Override
@@ -118,6 +148,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     }
 
     @Override
+    public <R extends JsonEntity<R>> List<R> getEntitiesOrDefault(String path, Supplier<R> supplier, List<R> defaultValue) {
+        return super.getEntitiesOrDefault(path, supplier, defaultValue);
+    }
+
+    @Override
     public JsonBean putEntities(String path, List<? extends JsonEntity<?>> entities) {
         return super.putEntities(path, entities);
     }
@@ -125,6 +160,11 @@ public final class JsonBean extends JsonEntity<JsonBean> {
     @Override
     public <R> R getObject(String path) {
         return super.getObject(path);
+    }
+
+    @Override
+    public <R> R getObjectOrDefault(String path, R defaultValue) {
+        return super.getObjectOrDefault(path, defaultValue);
     }
 
     @Override

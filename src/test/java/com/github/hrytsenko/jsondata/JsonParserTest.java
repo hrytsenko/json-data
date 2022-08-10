@@ -84,7 +84,7 @@ class JsonParserTest {
         List<JsonBean> actualEntities = JsonParser.stringToEntities(sourceJson, JsonBean::create);
 
         List<JsonBean> expectedEntities = Collections.singletonList(
-            JsonBean.create().fromMap(Collections.singletonMap("foo", "FOO")));
+                JsonBean.create().fromMap(Collections.singletonMap("foo", "FOO")));
         Assertions.assertEquals(expectedEntities, actualEntities);
     }
 
@@ -172,7 +172,7 @@ class JsonParserTest {
     @Test
     void listToString() {
         List<Map<String, ?>> sourceList = Collections.singletonList(
-            Collections.singletonMap("foo", "FOO"));
+                Collections.singletonMap("foo", "FOO"));
 
         String actualJson = JsonParser.listToString(sourceList);
 
@@ -183,7 +183,7 @@ class JsonParserTest {
     @Test
     void listToString_serializationFailed() {
         List<Map<String, ?>> sourceList = Collections.singletonList(
-            Collections.singletonMap("foo", new Object()));
+                Collections.singletonMap("foo", new Object()));
 
         Assertions.assertThrows(
                 JsonParserException.class,
