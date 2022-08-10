@@ -50,7 +50,7 @@ Output:
 
 ## Transformation
 
-This library use [Jolt] DSL to transform JSON entities.
+This library uses [Jolt] DSL to transform JSON entities.
 The class `JsonMapper` provides the transformation API.
 
 The [Jolt] DSL uses specifications to express a list of chained transformations.
@@ -101,7 +101,7 @@ It ensures completeness of an output document.
 
 ## Validation
 
-JSON data use [Justify] DSL (namely JSON Schema) to validate JSON entities.
+This library uses [Justify] DSL (namely JSON Schema) to validate JSON entities.
 The class `JsonValidator` provides the validation API.
 
 The [Justify] DSL uses schemas to express a structure and a content of a document.
