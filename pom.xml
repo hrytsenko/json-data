@@ -5,7 +5,7 @@
 
     <groupId>com.github.hrytsenko</groupId>
     <artifactId>json-data</artifactId>
-    <version>0.2.2</version>
+    <version>1.0.0</version>
 
     <url>https://github.com/hrytsenko/json-data</url>
     <inceptionYear>2020</inceptionYear>
@@ -39,15 +39,15 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <json-jackson.version>2.12.7</json-jackson.version>
-        <json-path.version>2.7.0</json-path.version>
+        <json-jackson.version>2.12.7.1</json-jackson.version>
+        <json-path.version>2.8.0</json-path.version>
         <json-jolt.version>0.1.7</json-jolt.version>
         <json-justify.version>3.1.0</json-justify.version>
         <json-jakarta.version>2.0.1</json-jakarta.version>
         <commons-io.version>2.11.0</commons-io.version>
 
-        <lombock.version>1.18.24</lombock.version>
-        <junit.version>5.8.2</junit.version>
+        <lombock.version>1.18.26</lombock.version>
+        <junit.version>5.9.2</junit.version>
     </properties>
 
     <dependencyManagement>
