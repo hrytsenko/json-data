@@ -1,10 +1,10 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hrytsenko_json-data&metric=alert_status)](https://sonarcloud.io/dashboard?id=hrytsenko_json-data)
 [![](https://jitpack.io/v/hrytsenko/json-data.svg)](https://jitpack.io/#hrytsenko/json-data)
 
-# JSON data
+# JSON Data
 
-This library allows to manipulate JSON entities without serialization into POJOs.
-It encourages use of DSLs to manipulate, transform and validate JSON objects.
+This library handles JSON entities without transformation into POJOs.
+It uses of DSLs to manipulate, transform and validate JSON objects.
 
 The JSON entity inherits the class `JsonEntity` and defines methods to manipulate the underlying object:
 
