@@ -10,18 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-    - uses: actions/setup-java@v5
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: 'maven'
-    - run: chmod +x mvnw
-    - env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: >
-        ./mvnw -B verify
-        org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-        -Dsonar.organization=hrytsenko
-        -Dsonar.projectKey=hrytsenko_json-data
-        -Pcoverage
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: 'maven'
+      - run: chmod +x mvnw
+      - env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          ./mvnw -B verify
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.organization=hrytsenko
+          -Dsonar.projectKey=hrytsenko_json-data
+          -Pcoverage
