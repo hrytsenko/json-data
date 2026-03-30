@@ -15,48 +15,47 @@
  */
 package com.github.hrytsenko.jsondata;
 
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.io.IOUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.io.IOUtils;
 
 /**
- * <p>Class {@link JsonResources} provides utilities to read schemas for {@link JsonValidator} and {@link JsonMapper}.
+ * <p>Class {@link JsonResources} provides utilities to read schemas for {@link JsonValidator} and
+ * {@link JsonMapper}.
  */
 @UtilityClass
 public class JsonResources {
 
-    /**
-     * Reads a resource content.
-     *
-     * @param name the resource name.
-     *             The leading slash is optional.
-     * @return the resource content.
-     */
-    @SneakyThrows
-    public static String readResource(String name) {
-        try (InputStream stream = getLoader().getResourceAsStream(resolveName(name))) {
-            if (stream == null) {
-                throw new IOException("Resource not found");
-            }
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
-        }
+  /**
+   * Reads a resource content.
+   *
+   * @param name the resource name. The leading slash is optional.
+   * @return the resource content.
+   */
+  @SneakyThrows
+  public static String readResource(String name) {
+    try (InputStream stream = getLoader().getResourceAsStream(resolveName(name))) {
+      if (stream == null) {
+        throw new IOException("Resource not found");
+      }
+      return IOUtils.toString(stream, StandardCharsets.UTF_8);
     }
+  }
 
-    private static String resolveName(String name) {
-        if (name.startsWith("/")) {
-            return name.substring(1);
-        }
-        return name;
+  private static String resolveName(String name) {
+    if (name.startsWith("/")) {
+      return name.substring(1);
     }
+    return name;
+  }
 
-    private static ClassLoader getLoader() {
-        return Optional.ofNullable(Thread.currentThread().getContextClassLoader())
-                .orElseGet(JsonResources.class::getClassLoader);
-    }
+  private static ClassLoader getLoader() {
+    return Optional.ofNullable(Thread.currentThread().getContextClassLoader())
+        .orElseGet(JsonResources.class::getClassLoader);
+  }
 
 }

@@ -15,30 +15,29 @@
  */
 package com.github.hrytsenko.jsondata;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
-
 class JsonResourcesTest {
 
-    @ParameterizedTest
-    @ValueSource(strings = {"empty.json", "/empty.json"})
-    void readResource(String sourcePath) {
-        String actualJson = JsonResources.readResource(sourcePath);
+  @ParameterizedTest
+  @ValueSource(strings = {"empty.json", "/empty.json"})
+  void readResource(String sourcePath) {
+    String actualJson = JsonResources.readResource(sourcePath);
 
-        String expectedJson = "{}";
-        Assertions.assertEquals(expectedJson, actualJson);
-    }
+    String expectedJson = "{}";
+    Assertions.assertEquals(expectedJson, actualJson);
+  }
 
-    @Test
-    void readResource_absentFile() {
-        Assertions.assertThrows(
-                IOException.class,
-                () -> JsonResources.readResource("absent.json")
-        );
-    }
+  @Test
+  void readResource_absentFile() {
+    Assertions.assertThrows(
+        IOException.class,
+        () -> JsonResources.readResource("absent.json")
+    );
+  }
 
 }

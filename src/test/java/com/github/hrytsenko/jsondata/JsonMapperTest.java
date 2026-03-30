@@ -15,102 +15,101 @@
  */
 package com.github.hrytsenko.jsondata;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
 class JsonMapperTest {
 
-    @Test
-    void create_invalidSchema() {
-        String sourceSchema = "";
+  @Test
+  void create_invalidSchema() {
+    String sourceSchema = "";
 
-        Assertions.assertThrows(
-                JsonMapperException.class,
-                () -> JsonMapper.create(sourceSchema, JsonBean::create));
-    }
+    Assertions.assertThrows(
+        JsonMapperException.class,
+        () -> JsonMapper.create(sourceSchema, JsonBean::create));
+  }
 
-    @ParameterizedTest
-    @MethodSource("mapEntity_testData")
-    void mapEntity(String sourceSchema, String sourceJson, String expectedJson) {
-        JsonBean sourceEntity = JsonParser.stringToEntity(sourceJson, JsonBean::create);
+  @ParameterizedTest
+  @MethodSource("mapEntity_testData")
+  void mapEntity(String sourceSchema, String sourceJson, String expectedJson) {
+    JsonBean sourceEntity = JsonParser.stringToEntity(sourceJson, JsonBean::create);
 
-        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
-        JsonBean actualEntity = mapper.map(sourceEntity);
+    JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+    JsonBean actualEntity = mapper.map(sourceEntity);
 
-        JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
-        Assertions.assertEquals(expectedEntity, actualEntity);
-    }
+    JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
+    Assertions.assertEquals(expectedEntity, actualEntity);
+  }
 
-    private static Stream<Arguments> mapEntity_testData() {
-        return Stream.of(
-                Arguments.of(
-                        "[{'operation':'shift','spec':{'foo':'bar'}},{'operation':'default','spec':{}}]",
-                        "{}",
-                        "{}"
-                ),
-                Arguments.of(
-                        "[{'operation':'shift','spec':{'foo':'bar'}}]",
-                        "{'foo':'FOO'}",
-                        "{'bar':'FOO'}"
-                )
-        );
-    }
+  private static Stream<Arguments> mapEntity_testData() {
+    return Stream.of(
+        Arguments.of(
+            "[{'operation':'shift','spec':{'foo':'bar'}},{'operation':'default','spec':{}}]",
+            "{}",
+            "{}"
+        ),
+        Arguments.of(
+            "[{'operation':'shift','spec':{'foo':'bar'}}]",
+            "{'foo':'FOO'}",
+            "{'bar':'FOO'}"
+        )
+    );
+  }
 
-    @Test
-    void mapEntity_undefinedOutput() {
-        JsonBean sourceEntity = JsonBean.create();
-        String sourceSchema = "[{'operation':'shift','spec':{'foo':'bar'}}]";
+  @Test
+  void mapEntity_undefinedOutput() {
+    JsonBean sourceEntity = JsonBean.create();
+    String sourceSchema = "[{'operation':'shift','spec':{'foo':'bar'}}]";
 
-        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
-        Assertions.assertThrows(
-                JsonMapperException.class,
-                () -> mapper.map(sourceEntity));
-    }
+    JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+    Assertions.assertThrows(
+        JsonMapperException.class,
+        () -> mapper.map(sourceEntity));
+  }
 
-    @ParameterizedTest
-    @MethodSource("mapEntities_testData")
-    void mapEntities(String sourceSchema, String sourceJson, String expectedJson) {
-        List<JsonBean> sourceEntity = JsonParser.stringToEntities(sourceJson, JsonBean::create);
+  @ParameterizedTest
+  @MethodSource("mapEntities_testData")
+  void mapEntities(String sourceSchema, String sourceJson, String expectedJson) {
+    List<JsonBean> sourceEntity = JsonParser.stringToEntities(sourceJson, JsonBean::create);
 
-        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
-        JsonBean actualEntity = mapper.map(sourceEntity);
+    JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+    JsonBean actualEntity = mapper.map(sourceEntity);
 
-        JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
-        Assertions.assertEquals(expectedEntity, actualEntity);
-    }
+    JsonBean expectedEntity = JsonParser.stringToEntity(expectedJson, JsonBean::create);
+    Assertions.assertEquals(expectedEntity, actualEntity);
+  }
 
-    private static Stream<Arguments> mapEntities_testData() {
-        return Stream.of(
-                Arguments.of(
-                        "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}},{'operation':'default','spec':{}}]",
-                        "[]",
-                        "{}"
-                ),
-                Arguments.of(
-                        "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]",
-                        "[{'foo':'FOO'}]",
-                        "{'bar':['FOO']}"
-                )
-        );
-    }
+  private static Stream<Arguments> mapEntities_testData() {
+    return Stream.of(
+        Arguments.of(
+            "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}},{'operation':'default','spec':{}}]",
+            "[]",
+            "{}"
+        ),
+        Arguments.of(
+            "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]",
+            "[{'foo':'FOO'}]",
+            "{'bar':['FOO']}"
+        )
+    );
+  }
 
-    @Test
-    void mapEntities_undefinedOutput() {
-        List<JsonBean> sourceEntities = Collections.singletonList(JsonBean.create());
-        String sourceSchema = "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]";
+  @Test
+  void mapEntities_undefinedOutput() {
+    List<JsonBean> sourceEntities = Collections.singletonList(JsonBean.create());
+    String sourceSchema = "[{'operation':'shift','spec':{'*':{'foo':'bar[]'}}}]";
 
-        JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
+    JsonMapper<JsonBean> mapper = JsonMapper.create(sourceSchema, JsonBean::create);
 
-        Assertions.assertThrows(
-                JsonMapperException.class,
-                () -> mapper.map(sourceEntities));
-    }
+    Assertions.assertThrows(
+        JsonMapperException.class,
+        () -> mapper.map(sourceEntities));
+  }
 
 }

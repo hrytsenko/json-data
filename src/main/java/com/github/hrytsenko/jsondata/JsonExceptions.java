@@ -15,28 +15,27 @@
  */
 package com.github.hrytsenko.jsondata;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 class JsonExceptions {
 
-    static void wrap(Runnable runnable, Function<Exception, ? extends RuntimeException> wrapper) {
-        try {
-            runnable.run();
-        } catch (Exception exception) {
-            throw wrapper.apply(exception);
-        }
+  static void wrap(Runnable runnable, Function<Exception, ? extends RuntimeException> wrapper) {
+    try {
+      runnable.run();
+    } catch (Exception exception) {
+      throw wrapper.apply(exception);
     }
+  }
 
-    static <R> R wrap(Callable<R> callable, Function<Exception, ? extends RuntimeException> wrapper) {
-        try {
-            return callable.call();
-        } catch (Exception exception) {
-            throw wrapper.apply(exception);
-        }
+  static <R> R wrap(Callable<R> callable, Function<Exception, ? extends RuntimeException> wrapper) {
+    try {
+      return callable.call();
+    } catch (Exception exception) {
+      throw wrapper.apply(exception);
     }
+  }
 
 }

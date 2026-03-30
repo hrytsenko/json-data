@@ -16,12 +16,14 @@
 package com.github.hrytsenko.jsondata;
 
 /**
- * <p>Class {@link JsonParser} throws exception {@link JsonParserException} in case of serialization errors.
+ * <p>Class {@link JsonParser} throws exception {@link JsonParserException} in case of
+ * serialization
+ * errors.
  */
 public class JsonParserException extends RuntimeException {
 
-    JsonParserException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  JsonParserException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
 }
